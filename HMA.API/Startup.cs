@@ -1,3 +1,4 @@
+using HMA.API.AppStart;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -15,15 +16,17 @@ namespace HMA.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            SwashbuckleStartup.Init(services, Configuration);
+
             services.AddControllers();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            SwashbuckleStartup.Init(app);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
