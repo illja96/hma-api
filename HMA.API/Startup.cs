@@ -20,12 +20,14 @@ namespace HMA.API
         {
             SwashbuckleStartup.Init(services, Configuration);
 
+            OAuthStartup.Init(services, Configuration);
+
             services.AddControllers();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            SwashbuckleStartup.Init(app);
+            SwashbuckleStartup.Init(app, Configuration);
 
             if (env.IsDevelopment())
             {

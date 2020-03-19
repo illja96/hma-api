@@ -11,9 +11,11 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Options\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.1.0" />
   </ItemGroup>
 
