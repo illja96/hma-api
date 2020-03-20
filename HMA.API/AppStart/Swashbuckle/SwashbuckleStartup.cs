@@ -66,9 +66,9 @@ namespace HMA.API.AppStart.Swashbuckle
                                 AuthorizationUrl = new Uri("/swagger/fake-oauth", UriKind.Relative),
                                 Scopes = new Dictionary<string, string>()
                                 {
-                                    { "openid", "OpenID info" },
-                                    { "email", "Email" },
-                                    { "profile", "Profile" }
+                                    { "openid", null },
+                                    { "email", null },
+                                    { "profile", null }
                                 }
                             }
                         },

@@ -1,10 +1,8 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Google;
+﻿using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 
 namespace HMA.API.AppStart.Auth
 {
@@ -23,25 +21,24 @@ namespace HMA.API.AppStart.Auth
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(jwtBearer =>
                 {
-                    var googleOptions = configuration.GetSection(nameof(GoogleOptions)).Get<GoogleOptions>();
-                    var googlePublicCertificateProvider = new GooglePublicCertificateProvider();
-                    var signingKeys = googlePublicCertificateProvider.GetAsync().GetAwaiter().GetResult();
-
+                    jwtBearer.SaveToken = true;
                     jwtBearer.RequireHttpsMetadata = false;
 
-                    jwtBearer.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateLifetime = true,
+                    jwtBearer.TokenValidationParameters.ValidateLifetime = true;
 
-                        ValidateIssuer = true,
-                        ValidIssuer = "https://accounts.google.com",
+                    jwtBearer.TokenValidationParameters.ValidateIssuer = true;
+                    jwtBearer.TokenValidationParameters.ValidIssuer = "https://accounts.google.com";
 
-                        ValidateAudience = true,
-                        ValidAudience = googleOptions.ClientId,
+                    var googleOptions = configuration.GetSection(nameof(GoogleOptions)).Get<GoogleOptions>();
+                    jwtBearer.TokenValidationParameters.ValidateAudience = true;
+                    jwtBearer.TokenValidationParameters.ValidAudience = googleOptions.ClientId;
 
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKeys = signingKeys
-                    };
+                    var googlePublicCertificateProvider = new GooglePublicCertificateProvider();
+                    var signingKeys = googlePublicCertificateProvider.GetAsync().GetAwaiter().GetResult();
+                    jwtBearer.TokenValidationParameters.ValidateIssuerSigningKey = true;
+                    jwtBearer.TokenValidationParameters.IssuerSigningKeys = signingKeys;
+
+                    jwtBearer.TokenValidationParameters.NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
                 });
         }
     }
