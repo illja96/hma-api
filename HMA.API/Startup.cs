@@ -1,4 +1,4 @@
-using HMA.API.AppStart;
+using HMA.API.AppStart.Auth;
 using HMA.API.AppStart.Swashbuckle;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
