@@ -1,4 +1,5 @@
 using HMA.API.AppStart;
+using HMA.API.AppStart.Swashbuckle;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +21,7 @@ namespace HMA.API
         {
             SwashbuckleStartup.Init(services, Configuration);
 
-            OAuthStartup.Init(services, Configuration);
+            AuthStartup.Init(services, Configuration);
 
             services.AddControllers();
         }
@@ -28,6 +29,8 @@ namespace HMA.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             SwashbuckleStartup.Init(app, Configuration);
+
+            AuthStartup.Init(app);
 
             if (env.IsDevelopment())
             {
