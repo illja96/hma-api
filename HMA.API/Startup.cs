@@ -1,5 +1,6 @@
 using HMA.API.AppStart.Auth;
 using HMA.API.AppStart.Swashbuckle;
+using HMA.DI.AppStart;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +21,8 @@ namespace HMA.API
         public void ConfigureServices(IServiceCollection services)
         {
             SwashbuckleStartup.Init(services, Configuration);
+
+            DiStartup.Init(services, Configuration);
 
             AuthStartup.Init(services, Configuration);
 
