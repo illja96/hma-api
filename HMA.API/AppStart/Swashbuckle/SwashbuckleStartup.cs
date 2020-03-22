@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using HMA.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -64,12 +66,10 @@ namespace HMA.API.AppStart.Swashbuckle
                             Implicit = new OpenApiOAuthFlow()
                             {
                                 AuthorizationUrl = new Uri("/swagger/fake-oauth", UriKind.Relative),
-                                Scopes = new Dictionary<string, string>()
-                                {
-                                    { "openid", null },
-                                    { "email", null },
-                                    { "profile", null }
-                                }
+                                Scopes = ScopeConstants.Scopes
+                                    .ToDictionary(
+                                        scope => scope,
+                                        scope => string.Empty)
                             }
                         },
                         Extensions = new Dictionary<string, IOpenApiExtension>()

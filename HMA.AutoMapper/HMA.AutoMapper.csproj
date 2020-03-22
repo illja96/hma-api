@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HMA.DTO\HMA.DTO.csproj" />
+    <ProjectReference Include="..\HMA.Infrastructure\HMA.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

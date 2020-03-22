@@ -25,6 +25,7 @@ namespace HMA.API.Controllers
         /// <returns></returns>
         [HttpPost("users/register")]
         [ProducesResponseType(typeof(UserInfoViewModel), 200)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(409)]
         public async Task<IActionResult> RegisterAsync(CancellationToken cancellationToken = default)
         {
@@ -43,6 +44,21 @@ namespace HMA.API.Controllers
         public async Task<IActionResult> GetCurrentAsync(CancellationToken cancellationToken = default)
         {
             var result = await _wrappedUserService.GetCurrentAsync(cancellationToken);
+            return result;
+        }
+
+        /// <summary>
+        /// Updates current user
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [HttpPatch("users/me")]
+        [ProducesResponseType(typeof(UserInfoViewModel), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> UpdateCurrentAsync(CancellationToken cancellationToken = default)
+        {
+            var result = await _wrappedUserService.UpdateCurrentAsync(cancellationToken);
             return result;
         }
 

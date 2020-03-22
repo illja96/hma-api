@@ -1,8 +1,8 @@
-﻿using System;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using HMA.BLL.Exceptions;
 using HMA.BLL.Services.Interfaces;
 using HMA.BLL.Wrappers.Wrappers.Interfaces;
 using HMA.DTO.Models;
@@ -43,10 +43,18 @@ namespace HMA.BLL.Wrappers.Wrappers
                 var result = new OkObjectResult(userViewModel);
                 return result;
             }
-            catch (ArgumentException)
+            catch (UserEmailNotVerifiedException)
             {
                 var modelState = new ModelStateDictionary();
-                modelState.AddModelError(nameof(userFromIdentity.GoogleId), "User with same GoogleId already registered");
+                modelState.AddModelError(nameof(UserInfo.EmailVerified), "Email is not verified");
+
+                var badResult = new BadRequestObjectResult(modelState);
+                return badResult;
+            }
+            catch (UserDuplicateInsertionException)
+            {
+                var modelState = new ModelStateDictionary();
+                modelState.AddModelError(nameof(UserInfo.GoogleId), "User already registered");
 
                 var badResult = new ConflictObjectResult(modelState);
                 return badResult;
@@ -58,30 +66,76 @@ namespace HMA.BLL.Wrappers.Wrappers
             var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
             var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
 
-            var user = await _userService.GetAsync(userFromIdentity.GoogleId, cancellationToken);
-            var userViewModel = _mapper.Map<UserInfoViewModel>(user);
+            try
+            {
+                var user = await _userService.GetAsync(userFromIdentity.GoogleId, cancellationToken);
+                var userViewModel = _mapper.Map<UserInfoViewModel>(user);
 
-            var result = new OkObjectResult(userViewModel);
-            return result;
-        }
-
-        public async Task<ObjectResult> DeleteProfileAsync(CancellationToken cancellation = default)
-        {
-            var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-            var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
-
-            var deletedUserCount = await _userService.DeleteAsync(userFromIdentity.GoogleId, cancellation);
-            if (deletedUserCount != 1)
+                var result = new OkObjectResult(userViewModel);
+                return result;
+            }
+            catch (UserEmailNotVerifiedException)
             {
                 var modelState = new ModelStateDictionary();
-                modelState.AddModelError(nameof(userFromIdentity.GoogleId), "User with specified GoogleId is not registered");
+                modelState.AddModelError(nameof(UserInfo.EmailVerified), "Email is not verified");
 
                 var badResult = new BadRequestObjectResult(modelState);
                 return badResult;
             }
+            catch (UserNotFoundException)
+            {
+                var badResult = new NotFoundObjectResult(null);
+                return badResult;
+            }
+        }
 
-            var result = new OkObjectResult(null);
-            return result;
+        public async Task<ObjectResult> UpdateCurrentAsync(CancellationToken cancellationToken = default)
+        {
+            var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
+            var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
+
+            try
+            {
+                var user = await _userService.UpdateAsync(userFromIdentity, cancellationToken);
+                var userViewModel = _mapper.Map<UserInfoViewModel>(user);
+
+                var result = new OkObjectResult(userViewModel);
+                return result;
+            }
+            catch (UserEmailNotVerifiedException)
+            {
+                var modelState = new ModelStateDictionary();
+                modelState.AddModelError(nameof(UserInfo.EmailVerified), "Email is not verified");
+
+                var badResult = new BadRequestObjectResult(modelState);
+                return badResult;
+            }
+            catch (UserNotFoundException)
+            {
+                var badResult = new NotFoundObjectResult(null);
+                return badResult;
+            }
+        }
+
+        public async Task<StatusCodeResult> DeleteProfileAsync(CancellationToken cancellationToken = default)
+        {
+            var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
+            var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
+
+            try
+            {
+                await _userService.DeleteAsync(
+                    userFromIdentity.GoogleId,
+                    cancellationToken);
+
+                var result = new OkResult();
+                return result;
+            }
+            catch (UserNotFoundException)
+            {
+                var badResult = new NotFoundResult();
+                return badResult;
+            }
         }
     }
 }

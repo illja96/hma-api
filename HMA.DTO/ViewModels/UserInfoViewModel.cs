@@ -1,4 +1,6 @@
-﻿namespace HMA.DTO.ViewModels
+﻿using System;
+
+namespace HMA.DTO.ViewModels
 {
     public class UserInfoViewModel
     {
@@ -15,5 +17,9 @@
         public string Locale { get; set; }
 
         public string Picture { get; set; }
+
+        public DateTime RegistrationDate { get; set; }
+
+        public DateTime LastUpdateDate { get; set; }
     }
 }

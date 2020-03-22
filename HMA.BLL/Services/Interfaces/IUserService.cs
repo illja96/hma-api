@@ -7,12 +7,16 @@ namespace HMA.BLL.Services.Interfaces
 {
     public interface IUserService
     {
+        Task<bool> Exists(
+            decimal userGoogleId,
+            CancellationToken cancellationToken = default);
+
         Task<UserInfo> GetAsync(
-            string userGoogleId,
+            decimal userGoogleId,
             CancellationToken cancellationToken = default);
 
         Task<List<UserInfo>> GetAsync(
-            List<string> userGoogleIds,
+            List<decimal> userGoogleIds,
             CancellationToken cancellationToken = default);
 
         Task<UserInfo> RegisterAsync(
@@ -23,8 +27,8 @@ namespace HMA.BLL.Services.Interfaces
             UserInfo user,
             CancellationToken cancellationToken = default);
 
-        Task<long> DeleteAsync(
-            string userGoogleId,
+        Task DeleteAsync(
+            decimal userGoogleId,
             CancellationToken cancellationToken = default);
     }
 }

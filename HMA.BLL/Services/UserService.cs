@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HMA.BLL.Exceptions;
 using HMA.BLL.Services.Interfaces;
 using HMA.DAL.Repositories.Interfaces;
 using HMA.DTO.Models;
@@ -19,18 +20,41 @@ namespace HMA.BLL.Services
             _userInfoRepository = userInfoRepository;
         }
 
+        public async Task<bool> Exists(
+            decimal userGoogleId,
+            CancellationToken cancellationToken = default)
+        {
+            var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, userGoogleId);
+            var usersCount = await _userInfoRepository.CountAsync(filter, cancellationToken);
+            var isUserExists = usersCount != 0;
+
+            return isUserExists;
+        }
+
         public async Task<UserInfo> GetAsync(
-            string userGoogleId,
+            decimal userGoogleId,
             CancellationToken cancellationToken = default)
         {
             var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, userGoogleId);
 
-            var user = await _userInfoRepository.FindOneAsync(filter, cancellationToken);
-            return user;
+            try
+            {
+                var user = await _userInfoRepository.FindOneAsync(filter, cancellationToken);
+                return user;
+            }
+            catch (InvalidOperationException e)
+            {
+                if (e.Message.Equals("Sequence contains no elements", StringComparison.Ordinal))
+                {
+                    throw new UserNotFoundException();
+                }
+
+                throw;
+            }
         }
 
         public async Task<List<UserInfo>> GetAsync(
-            List<string> userGoogleIds,
+            List<decimal> userGoogleIds,
             CancellationToken cancellationToken = default)
         {
             var filters = userGoogleIds
@@ -47,13 +71,16 @@ namespace HMA.BLL.Services
             UserInfo user,
             CancellationToken cancellationToken = default)
         {
-            var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, user.GoogleId);
-            var usersWithSameGoogleIdCount = await _userInfoRepository.CountAsync(filter, cancellationToken);
-            var isUserAlreadyExists = usersWithSameGoogleIdCount != 0;
-            if (isUserAlreadyExists)
+            ThrowExceptionIfUserEmailIsNotVerified(user);
+
+            var isUserExists = await Exists(user.GoogleId, cancellationToken);
+            if (isUserExists)
             {
-                throw new ArgumentException("User with same GoogleId already exists", nameof(user.GoogleId));
+                throw new UserDuplicateInsertionException();
             }
+
+            user.RegistrationDate = DateTime.UtcNow;
+            user.LastUpdateDate = user.RegistrationDate;
 
             user = await _userInfoRepository.InsertAsync(user, cancellationToken);
 
@@ -64,6 +91,16 @@ namespace HMA.BLL.Services
             UserInfo user,
             CancellationToken cancellationToken = default)
         {
+            ThrowExceptionIfUserEmailIsNotVerified(user);
+
+            var isUserExists = await Exists(user.GoogleId, cancellationToken);
+            if (!isUserExists)
+            {
+                throw new UserNotFoundException();
+            }
+
+            user.LastUpdateDate = DateTime.UtcNow;
+
             var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, user.GoogleId);
             var update = Builders<UserInfo>.Update
                 .Set(ui => ui.Email, user.Email)
@@ -71,21 +108,36 @@ namespace HMA.BLL.Services
                 .Set(ui => ui.Picture, user.Picture)
                 .Set(ui => ui.Locale, user.Locale)
                 .Set(ui => ui.GivenName, user.GivenName)
-                .Set(ui => ui.FamilyName, user.FamilyName);
+                .Set(ui => ui.FamilyName, user.FamilyName)
+                .Set(ui => ui.LastUpdateDate, user.LastUpdateDate);
 
-            user = await _userInfoRepository.UpdateAsync(filter, update, cancellationToken);
+            await _userInfoRepository.UpdateAsync(filter, update, cancellationToken);
+
+            user = await _userInfoRepository.FindOneAsync(filter, cancellationToken);
 
             return user;
         }
 
-        public async Task<long> DeleteAsync(
-            string userGoogleId,
+        public async Task DeleteAsync(
+            decimal userGoogleId,
             CancellationToken cancellationToken = default)
         {
-            var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, userGoogleId);
-            var deletedUsers = await _userInfoRepository.DeleteAsync(filter, cancellationToken);
+            var isUserExists = await Exists(userGoogleId, cancellationToken);
+            if (!isUserExists)
+            {
+                throw new UserNotFoundException();
+            }
 
-            return deletedUsers;
+            var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, userGoogleId);
+            await _userInfoRepository.DeleteAsync(filter, cancellationToken);
+        }
+
+        private static void ThrowExceptionIfUserEmailIsNotVerified(UserInfo user)
+        {
+            if (!user.EmailVerified)
+            {
+                throw new UserEmailNotVerifiedException();
+            }
         }
     }
 }

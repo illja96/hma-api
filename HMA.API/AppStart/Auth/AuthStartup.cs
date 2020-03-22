@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Google;
+﻿using HMA.Infrastructure.Auth;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -38,7 +39,7 @@ namespace HMA.API.AppStart.Auth
                     jwtBearer.TokenValidationParameters.ValidateIssuerSigningKey = true;
                     jwtBearer.TokenValidationParameters.IssuerSigningKeys = signingKeys;
 
-                    jwtBearer.TokenValidationParameters.NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
+                    jwtBearer.TokenValidationParameters.NameClaimType = ClaimsConstants.NameIdentifier;
                 });
         }
     }

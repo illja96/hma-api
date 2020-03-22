@@ -7,7 +7,7 @@ namespace HMA.DTO.Models
     [Table("Users")]
     public class UserInfo : BaseDalModel
     {
-        public string GoogleId { get; set; }
+        public decimal GoogleId { get; set; }
 
         public string Email { get; set; }
 
@@ -20,5 +20,9 @@ namespace HMA.DTO.Models
         public string Locale { get; set; }
 
         public Uri Picture { get; set; }
+
+        public DateTime RegistrationDate { get; set; }
+
+        public DateTime LastUpdateDate { get; set; }
     }
 }

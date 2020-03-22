@@ -10,6 +10,8 @@ namespace HMA.BLL.Wrappers.Wrappers.Interfaces
 
         Task<ObjectResult> GetCurrentAsync(CancellationToken cancellationToken = default);
 
-        Task<ObjectResult> DeleteProfileAsync(CancellationToken cancellation = default);
+        Task<ObjectResult> UpdateCurrentAsync(CancellationToken cancellationToken = default);
+
+        Task<StatusCodeResult> DeleteProfileAsync(CancellationToken cancellation = default);
     }
 }

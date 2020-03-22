@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using HMA.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -23,14 +24,7 @@ namespace HMA.API.AppStart.Swashbuckle
             {
                 operation.Responses.Add("401", new OpenApiResponse() { Description = "Unauthorized" });
                 operation.Responses.Add("403", new OpenApiResponse() { Description = "Forbidden" });
-
-                var scopes = new List<string>()
-                {
-                    "openid",
-                    "profile",
-                    "email"
-                };
-
+                
                 operation.Security.Add(new OpenApiSecurityRequirement()
                 {
                     {
@@ -42,7 +36,7 @@ namespace HMA.API.AppStart.Swashbuckle
                                 Type = ReferenceType.SecurityScheme
                             }
                         },
-                        scopes
+                        ScopeConstants.Scopes
                     }
                 });
             }
