@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HMA.API.Controllers
 {
-    [Authorize]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IWrappedUserService _wrappedUserService;

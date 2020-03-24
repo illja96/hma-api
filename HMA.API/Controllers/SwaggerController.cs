@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 namespace HMA.API.Controllers
 {
     [ApiController]
+    [AllowAnonymous]
     public class SwaggerController : ControllerBase
     {
         private readonly IOptions<GoogleOptions> _googleOptions;
@@ -23,7 +24,7 @@ namespace HMA.API.Controllers
         /// Redirects host to Google authorization endpoint
         /// </summary>
         /// <returns></returns>
-        [AllowAnonymous]
+
         [HttpGet("swagger/fake-oauth")]
         [ProducesResponseType(302)]
         public IActionResult FakeOAuth()

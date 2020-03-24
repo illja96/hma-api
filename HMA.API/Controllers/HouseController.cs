@@ -2,13 +2,14 @@
 using System.Threading.Tasks;
 using HMA.BLL.Wrappers.Wrappers.Interfaces;
 using HMA.DTO.ViewModels.House;
+using HMA.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HMA.API.Controllers
 {
-    [Authorize]
     [ApiController]
+    [Authorize(PolicyConstants.UserRegistered)]
     public class HouseController : ControllerBase
     {
         private readonly IWrappedHouseService _wrappedHouseService;

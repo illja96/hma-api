@@ -1,6 +1,7 @@
 ﻿using HMA.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,8 @@ namespace HMA.API.AppStart.Auth
         public static void Init(IApplicationBuilder app)
         {
             app.UseAuthentication();
+
+            app.UseAuthorization();
         }
 
         public static void Init(IServiceCollection services, IConfiguration configuration)
@@ -41,6 +44,18 @@ namespace HMA.API.AppStart.Auth
 
                     jwtBearer.TokenValidationParameters.NameClaimType = ClaimsConstants.NameIdentifier;
                 });
+
+            services.AddTransient<IAuthorizationHandler, MongoAuthorizationHandler>();
+
+            services.AddAuthorization(authorization =>
+            {
+                authorization.AddPolicy(
+                    PolicyConstants.UserRegistered,
+                    builder =>
+                    {
+                        builder.RequireClaim(ClaimsConstants.Registered, true.ToString());
+                    });
+            });
         }
     }
 }

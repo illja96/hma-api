@@ -15,5 +15,7 @@
         public const string SurName = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname";
 
         public const string Locale = "locale";
+
+        public const string Registered = "registered";
     }
 }
