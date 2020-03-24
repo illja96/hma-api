@@ -8,6 +8,7 @@ namespace HMA.DI.Projects
     {
         public static void Init(IServiceCollection services)
         {
+            services.AddSingleton<IHouseService, HouseService>();
             services.AddSingleton<IUserService, UserService>();
         }
     }

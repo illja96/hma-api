@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HMA.BLL.Exceptions;
+using HMA.BLL.Exceptions.User;
 using HMA.BLL.Services.Interfaces;
 using HMA.DAL.Repositories.Interfaces;
 using HMA.DTO.Models;
@@ -20,22 +19,22 @@ namespace HMA.BLL.Services
             _userInfoRepository = userInfoRepository;
         }
 
-        public async Task<bool> Exists(
-            decimal userGoogleId,
+        public async Task<bool> ExistsAsync(
+            decimal userId,
             CancellationToken cancellationToken = default)
         {
-            var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, userGoogleId);
+            var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, userId);
             var usersCount = await _userInfoRepository.CountAsync(filter, cancellationToken);
             var isUserExists = usersCount != 0;
 
             return isUserExists;
         }
 
-        public async Task<UserInfo> GetAsync(
-            decimal userGoogleId,
+        public async Task<UserInfo> GetByIdAsync(
+            decimal userId,
             CancellationToken cancellationToken = default)
         {
-            var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, userGoogleId);
+            var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, userId);
 
             try
             {
@@ -53,17 +52,14 @@ namespace HMA.BLL.Services
             }
         }
 
-        public async Task<List<UserInfo>> GetAsync(
-            List<decimal> userGoogleIds,
+        public async Task<List<UserInfo>> GetByIdsAsync(
+            List<decimal> userIds,
             CancellationToken cancellationToken = default)
         {
-            var filters = userGoogleIds
-                .Select(userGoogleId => Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, userGoogleId))
-                .ToList();
-
-            var filter = Builders<UserInfo>.Filter.Or(filters);
+            var filter = Builders<UserInfo>.Filter.In(ui => ui.GoogleId, userIds);
 
             var users = await _userInfoRepository.FindAsync(filter, cancellationToken);
+
             return users;
         }
 
@@ -73,7 +69,7 @@ namespace HMA.BLL.Services
         {
             ThrowExceptionIfUserEmailIsNotVerified(user);
 
-            var isUserExists = await Exists(user.GoogleId, cancellationToken);
+            var isUserExists = await ExistsAsync(user.GoogleId, cancellationToken);
             if (isUserExists)
             {
                 throw new UserDuplicateInsertionException();
@@ -93,7 +89,7 @@ namespace HMA.BLL.Services
         {
             ThrowExceptionIfUserEmailIsNotVerified(user);
 
-            var isUserExists = await Exists(user.GoogleId, cancellationToken);
+            var isUserExists = await ExistsAsync(user.GoogleId, cancellationToken);
             if (!isUserExists)
             {
                 throw new UserNotFoundException();
@@ -118,18 +114,16 @@ namespace HMA.BLL.Services
             return user;
         }
 
-        public async Task DeleteAsync(
-            decimal userGoogleId,
+        public async Task<bool> DeleteByIdAsync(
+            decimal userId,
             CancellationToken cancellationToken = default)
         {
-            var isUserExists = await Exists(userGoogleId, cancellationToken);
-            if (!isUserExists)
-            {
-                throw new UserNotFoundException();
-            }
+            var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, userId);
+            var deletedUsersCount = await _userInfoRepository.DeleteAsync(filter, cancellationToken);
 
-            var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, userGoogleId);
-            await _userInfoRepository.DeleteAsync(filter, cancellationToken);
+            var isUserDeleted = deletedUsersCount == 1;
+
+            return isUserDeleted;
         }
 
         private static void ThrowExceptionIfUserEmailIsNotVerified(UserInfo user)

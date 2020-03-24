@@ -1,72 +1,69 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using HMA.DTO.Models;
+using HMA.DTO.Models.House;
+using MongoDB.Bson;
 
 namespace HMA.BLL.Services.Interfaces
 {
     /// <summary>
-    /// User service
+    /// House server
     /// </summary>
-    public interface IUserService
+    public interface IHouseService
     {
         /// <summary>
-        /// Check if user exists
+        /// Create new house
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="houseCreationRequest">House creation request</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<bool> ExistsAsync(
+        Task<HouseInfo> CreateHouseAsync(
+            HouseCreationRequest houseCreationRequest,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Get house by id.
+        /// Returns house only if user is owner or member of a house
+        /// </summary>
+        /// <param name="houseId">House id</param>
+        /// <param name="userId">User id</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<HouseInfo> GetHouseByIdAsync(
+            BsonObjectId houseId,
             decimal userId,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Get user by id
+        /// Get owned houses
+        /// </summary>
+        /// <param name="ownerId">Owner (user) id</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<List<HouseSimpleInfo>> GetOwnedHousesAsync(
+            decimal ownerId,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Get member of houses
         /// </summary>
         /// <param name="userId">User id</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<UserInfo> GetByIdAsync(
+        Task<List<HouseSimpleInfo>> GetMemberOfHousesAsync(
             decimal userId,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Get users by ids
+        /// Delete house by id.
+        /// Deletes house only if user is owner of a house
         /// </summary>
-        /// <param name="userIds">User ids</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<List<UserInfo>> GetByIdsAsync(
-            List<decimal> userIds,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Register new user
-        /// </summary>
-        /// <param name="user">User</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<UserInfo> RegisterAsync(
-            UserInfo user,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Update user info
-        /// </summary>
-        /// <param name="user">User</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<UserInfo> UpdateAsync(
-            UserInfo user,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Delete user by id
-        /// </summary>
+        /// <param name="houseId">House id</param>
         /// <param name="userId">User id</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<bool> DeleteByIdAsync(
+        Task DeleteHouseByIdAsync(
+            BsonObjectId houseId,
             decimal userId,
             CancellationToken cancellationToken = default);
     }

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using HMA.BLL.Exceptions;
+using HMA.BLL.Exceptions.User;
 using HMA.BLL.Services.Interfaces;
 using HMA.BLL.Wrappers.Wrappers.Interfaces;
 using HMA.DTO.Models;
@@ -68,7 +68,7 @@ namespace HMA.BLL.Wrappers.Wrappers
 
             try
             {
-                var user = await _userService.GetAsync(userFromIdentity.GoogleId, cancellationToken);
+                var user = await _userService.GetByIdAsync(userFromIdentity.GoogleId, cancellationToken);
                 var userViewModel = _mapper.Map<UserInfoViewModel>(user);
 
                 var result = new OkObjectResult(userViewModel);
@@ -122,20 +122,18 @@ namespace HMA.BLL.Wrappers.Wrappers
             var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
             var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
 
-            try
-            {
-                await _userService.DeleteAsync(
-                    userFromIdentity.GoogleId,
-                    cancellationToken);
+            var isUserDeleted = await _userService.DeleteByIdAsync(
+                userFromIdentity.GoogleId,
+                cancellationToken);
 
-                var result = new OkResult();
-                return result;
-            }
-            catch (UserNotFoundException)
+            if (!isUserDeleted)
             {
                 var badResult = new NotFoundResult();
                 return badResult;
             }
+
+            var result = new OkResult();
+            return result;
         }
     }
 }

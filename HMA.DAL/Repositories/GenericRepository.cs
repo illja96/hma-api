@@ -38,7 +38,20 @@ namespace HMA.DAL.Repositories
             CancellationToken cancellationToken = default)
         {
             var batches = await _mongoDbCollection.FindAsync(filterDefinition, null, cancellationToken);
-            return await batches.ToListAsync(cancellationToken);
+            var items = await batches.ToListAsync(cancellationToken);
+
+            return items;
+        }
+
+        public async Task<List<TOut>> FindAsync<TOut>(
+            PipelineDefinition<T, TOut> pipelineDefinition,
+            CancellationToken cancellationToken = default)
+            where TOut : class
+        {
+            var batches = await _mongoDbCollection.AggregateAsync(pipelineDefinition, null, cancellationToken);
+            var items = await batches.ToListAsync(cancellationToken);
+
+            return items;
         }
 
         public async Task<T> FindOneAsync(
@@ -48,6 +61,17 @@ namespace HMA.DAL.Repositories
             var item = await _mongoDbCollection
                 .Find(filterDefinition)
                 .SingleAsync(cancellationToken);
+            return item;
+        }
+
+        public async Task<TOut> FindOneAsync<TOut>(
+            PipelineDefinition<T, TOut> pipelineDefinition,
+            CancellationToken cancellationToken = default)
+            where TOut : class
+        {
+            var batches = await _mongoDbCollection.AggregateAsync(pipelineDefinition, null, cancellationToken);
+            var item = await batches.SingleAsync(cancellationToken);
+
             return item;
         }
 
@@ -104,7 +128,7 @@ namespace HMA.DAL.Repositories
         {
             return await _mongoDbCollection.CountDocumentsAsync(filterDefinition, null, cancellationToken);
         }
-
+        
         private string GetCollectionName(Type type)
         {
             var tableAttributes = type.GetCustomAttributes(typeof(TableAttribute), false)

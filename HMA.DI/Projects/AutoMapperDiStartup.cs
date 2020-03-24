@@ -12,6 +12,7 @@ namespace HMA.DI.Projects
         {
             var profiles = new List<Profile>()
             {
+                new HouseProfile(),
                 new UserProfile()
             };
 

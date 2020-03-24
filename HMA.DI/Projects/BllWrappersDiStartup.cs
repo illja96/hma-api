@@ -10,6 +10,7 @@ namespace HMA.DI.Projects
         {
             services.AddHttpContextAccessor();
 
+            services.AddScoped<IWrappedHouseService, WrappedHouseService>();
             services.AddScoped<IWrappedUserService, WrappedUserService>();
         }
     }

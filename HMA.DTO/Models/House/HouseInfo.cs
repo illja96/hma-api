@@ -2,13 +2,15 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using HMA.DTO.Models.Base;
 
-namespace HMA.DTO.Models
+namespace HMA.DTO.Models.House
 {
     [Table("Houses")]
-    public class House : BaseDalModel
+    public class HouseInfo : BaseDalModel
     {
+        public decimal OwnerId { get; set; }
+
         public string Name { get; set; }
 
-        public List<string> UserId { get; set; }
+        public List<decimal> MemberIds { get; set; }
     }
 }
