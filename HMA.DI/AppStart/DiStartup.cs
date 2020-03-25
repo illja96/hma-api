@@ -11,9 +11,7 @@ namespace HMA.DI.AppStart
             AutoMapperDiStartup.Init(services);
 
             BllDiStartup.Init(services);
-
-            BllWrappersDiStartup.Init(services);
-
+            
             DalDiStartup.Init(services, configuration);
         }
     }

@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HMA.BLL.Tier3\HMA.BLL.Tier3.csproj" />
     <ProjectReference Include="..\HMA.DI\HMA.DI.csproj" />
     <ProjectReference Include="..\HMA.Infrastructure\HMA.Infrastructure.csproj" />
   </ItemGroup>

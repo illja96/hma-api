@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Security.Claims;
 using AutoMapper;
-using HMA.DTO.Models;
-using HMA.DTO.ViewModels;
+using HMA.DTO.Models.User;
+using HMA.DTO.ViewModels.User;
 using HMA.Infrastructure.Auth;
 
 namespace HMA.AutoMapper.Profiles
@@ -13,6 +13,8 @@ namespace HMA.AutoMapper.Profiles
         {
             CreateMap<UserInfo, UserInfoViewModel>()
                 .ReverseMap();
+
+            CreateMap<UserInfo, UserSimpleInfoViewModel>();
 
             CreateMap<ClaimsIdentity, UserInfo>()
                 .ForMember(

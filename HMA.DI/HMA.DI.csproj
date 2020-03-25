@@ -30,8 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HMA.AutoMapper\HMA.AutoMapper.csproj" />
-    <ProjectReference Include="..\HMA.BLL.Wrappers\HMA.BLL.Wrappers.csproj" />
-    <ProjectReference Include="..\HMA.BLL\HMA.BLL.csproj" />
+    <ProjectReference Include="..\HMA.BLL.Tier3\HMA.BLL.Tier3.csproj" />
     <ProjectReference Include="..\HMA.DAL\HMA.DAL.csproj" />
   </ItemGroup>
 

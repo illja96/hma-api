@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using HMA.BLL.Services.Interfaces;
+using HMA.BLL.Tier1.Services.Interfaces;
 using HMA.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
@@ -11,9 +11,9 @@ namespace HMA.API.AppStart.Auth
 {
     public class MongoAuthorizationHandler : IAuthorizationHandler
     {
-        private readonly IUserService _userService;
+        private readonly IUserT1Service _userService;
 
-        public MongoAuthorizationHandler(IUserService userService)
+        public MongoAuthorizationHandler(IUserT1Service userService)
         {
             _userService = userService;
         }

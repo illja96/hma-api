@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using HMA.BLL.Wrappers.Wrappers.Interfaces;
-using HMA.DTO.ViewModels;
+using HMA.BLL.Tier3.Services.Interfaces;
+using HMA.DTO.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +11,11 @@ namespace HMA.API.Controllers
     [Authorize]
     public class UserController : ControllerBase
     {
-        private readonly IWrappedUserService _wrappedUserService;
+        private readonly IUserT3Service _userService;
 
-        public UserController(IWrappedUserService wrappedUserService)
+        public UserController(IUserT3Service userService)
         {
-            _wrappedUserService = wrappedUserService;
+            _userService = userService;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace HMA.API.Controllers
         [ProducesResponseType(409)]
         public async Task<IActionResult> RegisterAsync(CancellationToken cancellationToken = default)
         {
-            var result = await _wrappedUserService.RegisterAsync(cancellationToken);
+            var result = await _userService.RegisterAsync(cancellationToken);
             return result;
         }
 
@@ -43,7 +43,7 @@ namespace HMA.API.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetCurrentAsync(CancellationToken cancellationToken = default)
         {
-            var result = await _wrappedUserService.GetCurrentAsync(cancellationToken);
+            var result = await _userService.GetCurrentAsync(cancellationToken);
             return result;
         }
 
@@ -58,7 +58,7 @@ namespace HMA.API.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> UpdateCurrentAsync(CancellationToken cancellationToken = default)
         {
-            var result = await _wrappedUserService.UpdateCurrentAsync(cancellationToken);
+            var result = await _userService.UpdateCurrentAsync(cancellationToken);
             return result;
         }
 
@@ -72,7 +72,7 @@ namespace HMA.API.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> DeleteProfileAsync(CancellationToken cancellationToken = default)
         {
-            var result = await _wrappedUserService.DeleteProfileAsync(cancellationToken);
+            var result = await _userService.DeleteProfileAsync(cancellationToken);
             return result;
         }
     }

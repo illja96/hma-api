@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HMA.DTO\HMA.DTO.csproj" />
+    <ProjectReference Include="..\HMA.DTO.Models\HMA.DTO.Models.csproj" />
   </ItemGroup>
 
 </Project>
