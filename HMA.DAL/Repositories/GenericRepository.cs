@@ -93,8 +93,11 @@ namespace HMA.DAL.Repositories
             List<T> models,
             CancellationToken cancellationToken = default)
         {
-            models
-                .ForEach(m => m.Id = m.Id == null || m.Id == BsonObjectId.Empty ? m.Id = ObjectId.GenerateNewId() : m.Id);
+            var modelsWithEmptyOrNullId = models.Where(m => m.Id == null || m.Id == BsonObjectId.Empty);
+            foreach (var modelWithEmptyOrNullId in modelsWithEmptyOrNullId)
+            {
+                modelWithEmptyOrNullId.Id = ObjectId.GenerateNewId();
+            }
 
             await _mongoDbCollection.InsertManyAsync(models, cancellationToken: cancellationToken);
             return models;
@@ -128,7 +131,7 @@ namespace HMA.DAL.Repositories
         {
             return await _mongoDbCollection.CountDocumentsAsync(filterDefinition, null, cancellationToken);
         }
-        
+
         private string GetCollectionName(Type type)
         {
             var tableAttributes = type.GetCustomAttributes(typeof(TableAttribute), false)

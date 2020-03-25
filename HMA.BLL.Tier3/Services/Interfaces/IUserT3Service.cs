@@ -12,6 +12,6 @@ namespace HMA.BLL.Tier3.Services.Interfaces
 
         Task<ObjectResult> UpdateCurrentAsync(CancellationToken cancellationToken = default);
 
-        Task<StatusCodeResult> DeleteProfileAsync(CancellationToken cancellation = default);
+        Task<StatusCodeResult> DeleteProfileAsync(CancellationToken cancellationToken = default);
     }
 }
