@@ -31,7 +31,7 @@ namespace HMA.BLL.Tier1.Services
             CancellationToken cancellationToken = default)
         {
             var houseInfo = _mapper.Map<HouseInfo>(houseCreationRequest);
-            houseInfo.CreationDate = DateTime.Now;
+            houseInfo.CreationDate = DateTime.UtcNow;
 
             houseInfo = await _houseRepository.InsertAsync(houseInfo, cancellationToken);
 
@@ -155,24 +155,7 @@ namespace HMA.BLL.Tier1.Services
 
             return houseSimpleInfos;
         }
-
-        public async Task<HouseInfo> UpdateHouseMembersAsync(
-            HouseMembersUpdateRequest houseMembersUpdateRequest,
-            CancellationToken cancellationToken = default)
-        {
-            var houseFilter = Builders<HouseInfo>.Filter.Eq(hi => hi.Id, houseMembersUpdateRequest.HouseId);
-            var ownerFilter = Builders<HouseInfo>.Filter.Eq(hi => hi.OwnerId, houseMembersUpdateRequest.UserId);
-            var filter = Builders<HouseInfo>.Filter.And(houseFilter, ownerFilter);
-
-            var update = Builders<HouseInfo>.Update.Set(hi => hi.MemberIds, houseMembersUpdateRequest.MemberIds);
-
-            await _houseRepository.UpdateAsync(filter, update, cancellationToken);
-
-            var houseInfo = await GetHouseInfoByIdAsync(houseMembersUpdateRequest.HouseId, houseMembersUpdateRequest.UserId, cancellationToken);
-
-            return houseInfo;
-        }
-
+        
         public async Task DeleteHouseByIdAsync(
             BsonObjectId houseId,
             decimal userId,

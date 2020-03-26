@@ -103,7 +103,7 @@ namespace HMA.DAL.Repositories
             return models;
         }
 
-        public async Task<T> UpdateAsync(
+        public async Task<T> UpdateOneAsync(
             FilterDefinition<T> filterDefinition,
             UpdateDefinition<T> updateDefinition,
             CancellationToken cancellationToken = default)

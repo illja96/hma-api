@@ -122,13 +122,7 @@ namespace HMA.BLL.Tier1.Services
             CancellationToken cancellationToken = default)
         {
             ThrowExceptionIfUserEmailIsNotVerified(user);
-
-            var isUserExists = await ExistsAsync(user.GoogleId, cancellationToken);
-            if (!isUserExists)
-            {
-                throw new UserNotFoundException();
-            }
-
+            
             user.LastUpdateDate = DateTime.UtcNow;
 
             var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, user.GoogleId);
@@ -141,7 +135,7 @@ namespace HMA.BLL.Tier1.Services
                 .Set(ui => ui.FamilyName, user.FamilyName)
                 .Set(ui => ui.LastUpdateDate, user.LastUpdateDate);
 
-            await _userInfoRepository.UpdateAsync(filter, update, cancellationToken);
+            await _userInfoRepository.UpdateOneAsync(filter, update, cancellationToken);
 
             user = await _userInfoRepository.FindOneAsync(filter, cancellationToken);
 

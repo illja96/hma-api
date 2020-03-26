@@ -12,16 +12,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
-    <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HMA.AutoMapper.Tests\HMA.AutoMapper.Tests.csproj" />
-    <ProjectReference Include="..\HMA.BLL.Tier1\HMA.BLL.Tier1.csproj" />
-    <ProjectReference Include="..\HMA.DTO.Models.Tests\HMA.DTO.Models.Tests.csproj" />
+    <ProjectReference Include="..\HMA.AutoMapper\HMA.AutoMapper.csproj" />
   </ItemGroup>
 
 </Project>

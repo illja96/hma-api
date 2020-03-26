@@ -80,7 +80,7 @@ namespace HMA.DAL.Repositories.Interfaces
         /// <param name="updateDefinition">Update definition</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<T> UpdateAsync(
+        Task<T> UpdateOneAsync(
             FilterDefinition<T> filterDefinition,
             UpdateDefinition<T> updateDefinition,
             CancellationToken cancellationToken = default);
