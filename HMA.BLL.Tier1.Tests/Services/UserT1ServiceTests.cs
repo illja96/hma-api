@@ -432,5 +432,46 @@ namespace HMA.BLL.Tier1.Tests.Services
             await Assert.ThrowsExceptionAsync<InvalidOperationException>(
                 () => _userService.UpdateAsync(userInfo));
         }
+
+        [TestMethod]
+        public async Task DeleteByIdAsync_DeletesUser()
+        {
+            // Arrange
+            var userInfo = new UserInfo()
+            {
+                GoogleId = 123456789
+            };
+
+            _userRepositoryMock
+                .Setup(ur => ur.DeleteAsync(
+                    It.IsAny<FilterDefinition<UserInfo>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(1);
+
+            // Act
+            // Assert
+            await _userService.DeleteByIdAsync(userInfo.GoogleId);
+        }
+
+        [TestMethod]
+        public async Task DeleteByIdAsync_UserNotFound_ThrowsUserNotFoundException()
+        {
+            // Arrange
+            var userInfo = new UserInfo()
+            {
+                GoogleId = 123456789
+            };
+
+            _userRepositoryMock
+                .Setup(ur => ur.DeleteAsync(
+                    It.IsAny<FilterDefinition<UserInfo>>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(0);
+
+            // Act
+            // Assert
+            await Assert.ThrowsExceptionAsync<UserNotFoundException>(
+                () => _userService.DeleteByIdAsync(userInfo.GoogleId));
+        }
     }
 }

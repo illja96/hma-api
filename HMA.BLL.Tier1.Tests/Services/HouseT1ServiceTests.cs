@@ -335,7 +335,7 @@ namespace HMA.BLL.Tier1.Tests.Services
                 .Setup(hr => hr.DeleteAsync(
                     It.IsAny<FilterDefinition<HouseInfo>>(),
                     It.IsAny<CancellationToken>()))
-                .Throws<HouseNotFoundException>();
+                .ReturnsAsync(0);
 
             // Act
             // Assert
