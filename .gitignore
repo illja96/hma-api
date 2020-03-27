@@ -341,3 +341,4 @@ healthchecksdb
 
 # Development secrets & configuration
 appsettings.Development.json
+log-*.json

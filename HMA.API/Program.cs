@@ -1,6 +1,8 @@
+using System;
+using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace HMA.API
 {
@@ -16,14 +18,13 @@ namespace HMA.API
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host
                 .CreateDefaultBuilder(args)
-                .ConfigureLogging(logging =>
+                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
+                .UseSerilog((hostingContext, loggerConfiguration) =>
                 {
-                    logging.AddConsole();
+                    var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                    loggerConfiguration.Enrich.WithProperty(nameof(Version), assemblyVersion);
 
-#if DEBUG
-                    logging.AddDebug();
-#endif
-                })
-                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
+                    loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration);
+                });
     }
 }
