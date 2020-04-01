@@ -30,7 +30,7 @@ namespace HMA.AutoMapper.Profiles
                     opt => opt.MapFrom(
                         src => bool.Parse(src.FindFirst(ClaimsConstants.EmailVerified).Value)))
                 .ForMember(
-                    dest => dest.Picture,
+                    dest => dest.PictureUrl,
                     opt => opt.MapFrom(
                         src => new Uri(src.FindFirst(ClaimsConstants.Picture).Value, UriKind.Absolute)))
                 .ForMember(

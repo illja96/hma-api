@@ -85,7 +85,7 @@ namespace HMA.BLL.Tier1.Services
                 Email = ui.Email,
                 FamilyName = ui.FamilyName,
                 GivenName = ui.GivenName,
-                Picture = ui.Picture
+                PictureUrl = ui.PictureUrl
             });
 
             var pipeline = new EmptyPipelineDefinition<UserInfo>()
@@ -129,7 +129,7 @@ namespace HMA.BLL.Tier1.Services
             var update = Builders<UserInfo>.Update
                 .Set(ui => ui.Email, user.Email)
                 .Set(ui => ui.EmailVerified, user.EmailVerified)
-                .Set(ui => ui.Picture, user.Picture)
+                .Set(ui => ui.PictureUrl, user.PictureUrl)
                 .Set(ui => ui.Locale, user.Locale)
                 .Set(ui => ui.GivenName, user.GivenName)
                 .Set(ui => ui.FamilyName, user.FamilyName)

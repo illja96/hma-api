@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 
 namespace HMA.API.AppStart.Auth
 {
@@ -31,7 +32,11 @@ namespace HMA.API.AppStart.Auth
                     jwtBearer.TokenValidationParameters.ValidateLifetime = true;
 
                     jwtBearer.TokenValidationParameters.ValidateIssuer = true;
-                    jwtBearer.TokenValidationParameters.ValidIssuer = "https://accounts.google.com";
+                    jwtBearer.TokenValidationParameters.ValidIssuers = new List<string>()
+                    {
+                        "https://accounts.google.com",
+                        "accounts.google.com"
+                    };
 
                     var googleOptions = configuration.GetSection(nameof(GoogleOptions)).Get<GoogleOptions>();
                     jwtBearer.TokenValidationParameters.ValidateAudience = true;

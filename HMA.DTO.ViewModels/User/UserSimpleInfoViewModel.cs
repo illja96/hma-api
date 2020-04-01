@@ -10,6 +10,6 @@
 
         public string FamilyName { get; set; }
 
-        public string Picture { get; set; }
+        public string PictureUrl { get; set; }
     }
 }

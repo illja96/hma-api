@@ -12,6 +12,6 @@ namespace HMA.DTO.Models.User
 
         public string FamilyName { get; set; }
 
-        public Uri Picture { get; set; }
+        public Uri PictureUrl { get; set; }
     }
 }

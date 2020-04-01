@@ -39,6 +39,17 @@ namespace HMA.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseCors(corsPolicy =>
+                {
+                    corsPolicy.AllowAnyOrigin();
+                    corsPolicy.AllowAnyMethod();
+                    corsPolicy.AllowAnyHeader();
+                });
+            }
+            else
+            {
+                app.UseHsts();
             }
 
             app.UseSerilogRequestLogging();

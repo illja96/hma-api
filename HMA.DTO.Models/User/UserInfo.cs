@@ -19,7 +19,7 @@ namespace HMA.DTO.Models.User
 
         public string Locale { get; set; }
 
-        public Uri Picture { get; set; }
+        public Uri PictureUrl { get; set; }
 
         public DateTime RegistrationDate { get; set; }
 

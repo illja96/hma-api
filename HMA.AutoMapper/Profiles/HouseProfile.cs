@@ -8,6 +8,8 @@ namespace HMA.AutoMapper.Profiles
     {
         public HouseProfile()
         {
+            CreateMap<AvailableHousesInfo, AvailableHousesInfoViewModel>();
+
             CreateMap<HouseSimpleInfo, HouseSimpleInfoViewModel>()
                 .ReverseMap();
 
