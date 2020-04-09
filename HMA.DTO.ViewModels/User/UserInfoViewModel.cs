@@ -16,7 +16,7 @@ namespace HMA.DTO.ViewModels.User
 
         public string Locale { get; set; }
 
-        public string Picture { get; set; }
+        public string PictureUrl { get; set; }
 
         public DateTime RegistrationDate { get; set; }
 

@@ -1,3 +1,4 @@
+using HMA.API.AppStart;
 using HMA.API.AppStart.Auth;
 using HMA.API.AppStart.Swashbuckle;
 using HMA.DI.AppStart;
@@ -27,6 +28,8 @@ namespace HMA.API
 
             AuthStartup.Init(services, Configuration);
 
+            CorsStartup.Init(services, Configuration);
+
             services.AddControllers();
         }
 
@@ -36,21 +39,14 @@ namespace HMA.API
 
             AuthStartup.Init(app);
 
+            CorsStartup.Init(app, Configuration);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
 
-                app.UseCors(corsPolicy =>
-                {
-                    corsPolicy.AllowAnyOrigin();
-                    corsPolicy.AllowAnyMethod();
-                    corsPolicy.AllowAnyHeader();
-                });
-            }
-            else
-            {
-                app.UseHsts();
-            }
+            app.UseHsts();
 
             app.UseSerilogRequestLogging();
 
