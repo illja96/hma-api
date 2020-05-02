@@ -1,4 +1,5 @@
 # HMA API
+
 HMA API is a part of House Money Accountant solution.
 This part contains HTTP REST back-end server written using .NET Core SDK.
 
@@ -34,7 +35,7 @@ Optional:
 
 1. Install .NET Core SDK and Docker Desktop.
 
-2. Run next commands in PowerShell to ELK + Mongo stacks:
+2. Run next commands in PowerShell to setup ELK + Mongo stacks:
 
     ``` PowerShell
     docker network create elastic
