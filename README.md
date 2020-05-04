@@ -61,10 +61,13 @@ Optional:
     ``` JSON
     {
       "Serilog": {
+        "MinimumLevel": {
+          "Default": "Debug"
+        },
         "WriteTo": [
           {
             "Args": {
-              "nodeUris": "localhost:9200"
+              "nodeUris": "http://localhost:9200"
             }
           }
         ]
@@ -80,7 +83,7 @@ Optional:
         "ClientId": "Google OAuth 2.0 Client ID"
       },
       "MongoDbOptions": {
-        "ConnectionString": "localhost:27017"
+        "ConnectionString": "mongodb://localhost:27017"
       }
     }
     ```
