@@ -11,10 +11,11 @@ namespace HMA.AutoMapper.Profiles
     {
         public UserProfile()
         {
-            CreateMap<UserInfo, UserInfoViewModel>()
-                .ReverseMap();
-
+            CreateMap<UserInfo, UserInfoViewModel>();
+            CreateMap<UserInfo, UserSimpleInfo>();
             CreateMap<UserInfo, UserSimpleInfoViewModel>();
+
+            CreateMap<UserSimpleInfo, UserSimpleInfoViewModel>();
 
             CreateMap<ClaimsIdentity, UserInfo>()
                 .ForMember(
@@ -26,7 +27,7 @@ namespace HMA.AutoMapper.Profiles
                     opt => opt.MapFrom(
                         src => src.FindFirst(ClaimsConstants.EmailAddress).Value))
                 .ForMember(
-                    dest => dest.EmailVerified,
+                    dest => dest.IsEmailVerified,
                     opt => opt.MapFrom(
                         src => bool.Parse(src.FindFirst(ClaimsConstants.EmailVerified).Value)))
                 .ForMember(

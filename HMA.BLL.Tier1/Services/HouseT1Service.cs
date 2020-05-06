@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HMA.BLL.Tier1.Exceptions.House;
 using HMA.BLL.Tier1.Services.Interfaces;
+using HMA.DAL.Factories;
 using HMA.DAL.Repositories.Interfaces;
 using HMA.DTO.Models.House;
 using MongoDB.Bson;
@@ -44,10 +45,7 @@ namespace HMA.BLL.Tier1.Services
             CancellationToken cancellationToken = default)
         {
             var houseFilter = Builders<HouseInfo>.Filter.Eq(hi => hi.Id, houseId);
-
-            var ownerFilter = Builders<HouseInfo>.Filter.Eq(hi => hi.OwnerId, userId);
-            var memberFilter = Builders<HouseInfo>.Filter.All(hi => hi.MemberIds, new[] { userId });
-            var userFilter = Builders<HouseInfo>.Filter.Or(ownerFilter, memberFilter);
+            var userFilter = BuilderFactory.CreateHouseOwnerOrMembershipFilter(userId);
 
             var pipeline = new EmptyPipelineDefinition<HouseInfo>()
                 .Match(houseFilter)
@@ -69,13 +67,13 @@ namespace HMA.BLL.Tier1.Services
             }
         }
 
-        public async Task<HouseSimpleInfo> GetSimpleHouseByIdAsync(BsonObjectId houseId, decimal userId, CancellationToken cancellationToken = default)
+        public async Task<HouseSimpleInfo> GetSimpleHouseByIdAsync(
+            BsonObjectId houseId, 
+            decimal userId, 
+            CancellationToken cancellationToken = default)
         {
             var houseFilter = Builders<HouseInfo>.Filter.Eq(hi => hi.Id, houseId);
-
-            var ownerFilter = Builders<HouseInfo>.Filter.Eq(hi => hi.OwnerId, userId);
-            var memberFilter = Builders<HouseInfo>.Filter.All(hi => hi.MemberIds, new[] { userId });
-            var userFilter = Builders<HouseInfo>.Filter.Or(ownerFilter, memberFilter);
+            var userFilter = BuilderFactory.CreateHouseOwnerOrMembershipFilter(userId);
 
             var projection = Builders<HouseInfo>.Projection.Expression(hi => new HouseSimpleInfo()
             {
@@ -155,7 +153,7 @@ namespace HMA.BLL.Tier1.Services
 
             return houseSimpleInfos;
         }
-        
+
         public async Task DeleteHouseByIdAsync(
             BsonObjectId houseId,
             decimal userId,

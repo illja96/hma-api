@@ -22,6 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HMA.AutoMapper.Tests\HMA.AutoMapper.Tests.csproj" />
+    <ProjectReference Include="..\HMA.BLL.Tier3\HMA.BLL.Tier3.csproj" />
     <ProjectReference Include="..\HMA.DTO.Models.Tests\HMA.DTO.Models.Tests.csproj" />
   </ItemGroup>
 

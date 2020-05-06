@@ -10,7 +10,9 @@ namespace HMA.DI.AppStart
         {
             AutoMapperDiStartup.Init(services);
 
-            BllDiStartup.Init(services);
+            BllTier3DiStartup.Init(services);
+            BllTier2DiStartup.Init(services);
+            BllTier1DiStartup.Init(services);
             
             DalDiStartup.Init(services, configuration);
         }

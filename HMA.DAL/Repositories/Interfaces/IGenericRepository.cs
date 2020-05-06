@@ -13,8 +13,7 @@ namespace HMA.DAL.Repositories.Interfaces
         /// Find models
         /// </summary>
         /// <param name="filterDefinition">Filter definition</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<List<T>> FindAsync(
             FilterDefinition<T> filterDefinition,
             CancellationToken cancellationToken = default);
@@ -24,8 +23,7 @@ namespace HMA.DAL.Repositories.Interfaces
         /// </summary>
         /// <typeparam name="TOut">Output model type</typeparam>
         /// <param name="pipelineDefinition">Pipeline definition</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<List<TOut>> FindAsync<TOut>(
             PipelineDefinition<T, TOut> pipelineDefinition,
             CancellationToken cancellationToken = default)
@@ -35,8 +33,7 @@ namespace HMA.DAL.Repositories.Interfaces
         /// Find model
         /// </summary>
         /// <param name="filterDefinition">Filter definition</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<T> FindOneAsync(
             FilterDefinition<T> filterDefinition,
             CancellationToken cancellationToken = default);
@@ -46,8 +43,7 @@ namespace HMA.DAL.Repositories.Interfaces
         /// </summary>
         /// <typeparam name="TOut">Output model type</typeparam>
         /// <param name="pipelineDefinition">Pipeline definition</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<TOut> FindOneAsync<TOut>(
             PipelineDefinition<T, TOut> pipelineDefinition,
             CancellationToken cancellationToken = default)
@@ -57,8 +53,7 @@ namespace HMA.DAL.Repositories.Interfaces
         /// Insert model
         /// </summary>
         /// <param name="model">Model</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<T> InsertAsync(
             T model,
             CancellationToken cancellationToken = default);
@@ -67,8 +62,7 @@ namespace HMA.DAL.Repositories.Interfaces
         /// Insert models
         /// </summary>
         /// <param name="models">Models</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<List<T>> InsertManyAsync(
             List<T> models,
             CancellationToken cancellationToken = default);
@@ -78,8 +72,7 @@ namespace HMA.DAL.Repositories.Interfaces
         /// </summary>
         /// <param name="filterDefinition">Filter definition</param>
         /// <param name="updateDefinition">Update definition</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<T> UpdateOneAsync(
             FilterDefinition<T> filterDefinition,
             UpdateDefinition<T> updateDefinition,
@@ -89,8 +82,7 @@ namespace HMA.DAL.Repositories.Interfaces
         /// Delete model
         /// </summary>
         /// <param name="filterDefinition">Filter definition</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<long> DeleteAsync(
             FilterDefinition<T> filterDefinition,
             CancellationToken cancellationToken = default);
@@ -98,16 +90,14 @@ namespace HMA.DAL.Repositories.Interfaces
         /// <summary>
         /// Clear models
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<long> ClearAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Count models
         /// </summary>
         /// <param name="filterDefinition">Filter definition</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<long> CountAsync(
             FilterDefinition<T> filterDefinition,
             CancellationToken cancellationToken = default);

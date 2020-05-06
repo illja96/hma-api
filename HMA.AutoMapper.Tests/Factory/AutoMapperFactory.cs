@@ -9,8 +9,10 @@ namespace HMA.AutoMapper.Tests.Factory
     {
         private static readonly Type[] ProfileTypes = new Type[]
         {
+            typeof(BsonProfile),
             typeof(HouseProfile),
-            typeof(UserProfile)
+            typeof(UserProfile),
+            typeof(TransactionProfile)
         };
 
         public static IMapper Create()

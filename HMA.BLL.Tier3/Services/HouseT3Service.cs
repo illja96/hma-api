@@ -1,5 +1,4 @@
-﻿using System;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -52,9 +51,9 @@ namespace HMA.BLL.Tier3.Services
             BsonObjectId bsonHouseId;
             try
             {
-                bsonHouseId = new BsonObjectId(new ObjectId(houseId));
+                bsonHouseId = _mapper.Map<BsonObjectId>(houseId);
             }
-            catch (IndexOutOfRangeException)
+            catch (AutoMapperMappingException)
             {
                 var modelState = new ModelStateDictionary();
                 modelState.AddModelError(nameof(houseId), "Invalid format");
@@ -109,9 +108,9 @@ namespace HMA.BLL.Tier3.Services
             BsonObjectId bsonHouseId;
             try
             {
-                bsonHouseId = new BsonObjectId(new ObjectId(houseId));
+                bsonHouseId = _mapper.Map<BsonObjectId>(houseId);
             }
-            catch (IndexOutOfRangeException)
+            catch (AutoMapperMappingException)
             {
                 var modelState = new ModelStateDictionary();
                 modelState.AddModelError(nameof(houseId), "Invalid format");

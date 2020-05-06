@@ -1,8 +1,10 @@
-﻿using HMA.DAL.Options;
+﻿using HMA.DAL.Factories;
+using HMA.DAL.Options;
 using HMA.DAL.Repositories;
 using HMA.DAL.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
@@ -17,8 +19,9 @@ namespace HMA.DI.Projects
             services.AddSingleton(serviceProvider =>
             {
                 var mongoDbOptions = serviceProvider.GetRequiredService<IOptions<MongoDbOptions>>();
+                var logger = serviceProvider.GetRequiredService<ILogger<MongoClient>>();
 
-                var mongoClient = new MongoClient(mongoDbOptions.Value.ConnectionString) as IMongoClient;
+                var mongoClient = MongoClientFactory.Create(mongoDbOptions.Value, logger);
                 return mongoClient;
             });
 

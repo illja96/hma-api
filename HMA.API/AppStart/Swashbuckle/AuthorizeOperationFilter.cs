@@ -20,29 +20,42 @@ namespace HMA.API.AppStart.Swashbuckle
             }
 
             var policies = GetPolicies(context);
-            if (policies.Any())
+            if (!policies.Any())
             {
-                operation.Responses.Add("401", new OpenApiResponse() { Description = "Unauthorized" });
-                operation.Responses.Add("403", new OpenApiResponse() { Description = "Forbidden" });
-                
-                operation.Security.Add(new OpenApiSecurityRequirement()
-                {
-                    {
-                        new OpenApiSecurityScheme()
-                        {
-                            Reference = new OpenApiReference()
-                            {
-                                Id = "google-oauth2",
-                                Type = ReferenceType.SecurityScheme
-                            }
-                        },
-                        ScopeConstants.Scopes
-                    }
-                });
+                return;
             }
+
+            operation.Responses.Add("401", new OpenApiResponse() { Description = "Unauthorized" });
+            operation.Responses.Add("403", new OpenApiResponse() { Description = "Forbidden" });
+                
+            operation.Security.Add(new OpenApiSecurityRequirement()
+            {
+                {
+                    new OpenApiSecurityScheme()
+                    {
+                        Reference = new OpenApiReference()
+                        {
+                            Id = "Google OAuth 2.0",
+                            Type = ReferenceType.SecurityScheme
+                        }
+                    },
+                    ScopeConstants.Scopes
+                },
+                {
+                    new OpenApiSecurityScheme()
+                    {
+                        Reference = new OpenApiReference()
+                        {
+                            Id = "Google ID token",
+                            Type = ReferenceType.SecurityScheme
+                        }
+                    },
+                    new List<string>()
+                },
+            });
         }
 
-        private bool IsAllowAnonymous(OperationFilterContext context)
+        private static bool IsAllowAnonymous(OperationFilterContext context)
         {
             var isAllowAnonymousFromController = context.MethodInfo.DeclaringType?
                 .GetCustomAttributes(true)
@@ -59,7 +72,7 @@ namespace HMA.API.AppStart.Swashbuckle
             return isAllowAnonymous;
         }
 
-        private List<string> GetPolicies(OperationFilterContext context)
+        private static List<string> GetPolicies(OperationFilterContext context)
         {
             var policiesFromController = context.MethodInfo.DeclaringType?
                 .GetCustomAttributes(true)
@@ -84,6 +97,5 @@ namespace HMA.API.AppStart.Swashbuckle
 
             return policies;
         }
-
     }
 }

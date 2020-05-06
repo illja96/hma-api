@@ -9,12 +9,11 @@ namespace HMA.AutoMapper.Profiles
         public HouseProfile()
         {
             CreateMap<AvailableHousesInfo, AvailableHousesInfoViewModel>();
+            
+            CreateMap<HouseInfo, HouseSimpleInfo>();
+            CreateMap<HouseInfo, HouseInfoViewModel>();
 
-            CreateMap<HouseSimpleInfo, HouseSimpleInfoViewModel>()
-                .ReverseMap();
-
-            CreateMap<HouseInfo, HouseInfoViewModel>()
-                .ReverseMap();
+            CreateMap<HouseSimpleInfo, HouseSimpleInfoViewModel>();
 
             CreateMap<HouseCreationRequestViewModel, HouseCreationRequest>();
             CreateMap<HouseCreationRequest, HouseInfo>();

@@ -5,13 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HMA.BLL.Tier3.Services.Interfaces
 {
+    /// <summary>
+    /// House service
+    /// </summary>
     public interface IHouseT3Service
     {
         /// <summary>
         /// Get houses available to current user
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<ObjectResult> GetHousesAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -19,8 +21,7 @@ namespace HMA.BLL.Tier3.Services.Interfaces
         /// Returns house only if house is available to current user
         /// </summary>
         /// <param name="houseId">House id</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<ObjectResult> GetHouseByIdAsync(
             string houseId,
             CancellationToken cancellationToken = default);
@@ -29,8 +30,7 @@ namespace HMA.BLL.Tier3.Services.Interfaces
         /// Create new house
         /// </summary>
         /// <param name="houseCreationRequestViewModel">House creation request</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<ObjectResult> CreateHouseAsync(
             HouseCreationRequestViewModel houseCreationRequestViewModel,
             CancellationToken cancellationToken = default);
@@ -39,9 +39,8 @@ namespace HMA.BLL.Tier3.Services.Interfaces
         /// Delete house by id.
         /// Deletes house only of current user is owner of a house
         /// </summary>
-        /// <param name="houseId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="houseId">House id</param>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<ObjectResult> DeleteHouseByIdAsync(
             string houseId,
             CancellationToken cancellationToken = default);

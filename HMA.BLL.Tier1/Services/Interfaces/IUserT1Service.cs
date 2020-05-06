@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using HMA.BLL.Tier1.Exceptions.User;
 using HMA.DTO.Models.User;
 
 namespace HMA.BLL.Tier1.Services.Interfaces
@@ -13,9 +14,8 @@ namespace HMA.BLL.Tier1.Services.Interfaces
         /// <summary>
         /// Check if user exists
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="userId">User id</param>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<bool> ExistsAsync(
             decimal userId,
             CancellationToken cancellationToken = default);
@@ -24,8 +24,8 @@ namespace HMA.BLL.Tier1.Services.Interfaces
         /// Get user by id
         /// </summary>
         /// <param name="userId">User id</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <exception cref="UserNotFoundException"></exception>
         Task<UserInfo> GetByIdAsync(
             decimal userId,
             CancellationToken cancellationToken = default);
@@ -34,8 +34,8 @@ namespace HMA.BLL.Tier1.Services.Interfaces
         /// Get user by email
         /// </summary>
         /// <param name="email">User email</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <exception cref="UserNotFoundException"></exception>
         Task<UserInfo> GetByEmailAsync(
             string email,
             CancellationToken cancellationToken = default);
@@ -44,8 +44,7 @@ namespace HMA.BLL.Tier1.Services.Interfaces
         /// Get users by ids
         /// </summary>
         /// <param name="userIds">User ids</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<List<UserSimpleInfo>> GetByIdsAsync(
             List<decimal> userIds,
             CancellationToken cancellationToken = default);
@@ -53,29 +52,30 @@ namespace HMA.BLL.Tier1.Services.Interfaces
         /// <summary>
         /// Register new user
         /// </summary>
-        /// <param name="user">User</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="userInfo">User</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <exception cref="UserDuplicateInsertionException"></exception>
+        /// <exception cref="UserEmailNotVerifiedException"></exception>
         Task<UserInfo> RegisterAsync(
-            UserInfo user,
+            UserInfo userInfo,
             CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Update user info
         /// </summary>
-        /// <param name="user">User</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="userInfo">User</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <exception cref="UserEmailNotVerifiedException"></exception>
         Task<UserInfo> UpdateAsync(
-            UserInfo user,
+            UserInfo userInfo,
             CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Delete user by id
         /// </summary>
         /// <param name="userId">User id</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <exception cref="UserNotFoundException"></exception>
         Task DeleteByIdAsync(
             decimal userId,
             CancellationToken cancellationToken = default);

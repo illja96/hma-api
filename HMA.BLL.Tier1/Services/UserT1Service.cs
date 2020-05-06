@@ -128,7 +128,7 @@ namespace HMA.BLL.Tier1.Services
             var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, user.GoogleId);
             var update = Builders<UserInfo>.Update
                 .Set(ui => ui.Email, user.Email)
-                .Set(ui => ui.EmailVerified, user.EmailVerified)
+                .Set(ui => ui.IsEmailVerified, user.IsEmailVerified)
                 .Set(ui => ui.PictureUrl, user.PictureUrl)
                 .Set(ui => ui.Locale, user.Locale)
                 .Set(ui => ui.GivenName, user.GivenName)
@@ -158,7 +158,7 @@ namespace HMA.BLL.Tier1.Services
 
         private static void ThrowExceptionIfUserEmailIsNotVerified(UserInfo user)
         {
-            if (!user.EmailVerified)
+            if (!user.IsEmailVerified)
             {
                 throw new UserEmailNotVerifiedException();
             }

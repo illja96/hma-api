@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using HMA.DTO.Models.Base;
+using HMA.DTO.Models.Transactions;
 
 namespace HMA.DTO.Models.House
 {
@@ -15,5 +16,13 @@ namespace HMA.DTO.Models.House
         public List<decimal> MemberIds { get; set; }
 
         public DateTime CreationDate { get; set; }
+
+        public List<TransactionInfo> Transactions { get; set; }
+
+        public HouseInfo()
+        {
+            MemberIds = new List<decimal>();
+            Transactions = new List<TransactionInfo>();
+        }
     }
 }

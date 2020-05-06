@@ -23,7 +23,6 @@ namespace HMA.API.Controllers
         /// Add nonce.
         /// Redirects host to Google authorization endpoint
         /// </summary>
-        /// <returns></returns>
 
         [HttpGet("swagger/fake-oauth")]
         [ProducesResponseType(302)]

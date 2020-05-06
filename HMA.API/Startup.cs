@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using HMA.API.AppStart;
 using HMA.API.AppStart.Auth;
 using HMA.API.AppStart.Swashbuckle;
@@ -30,7 +31,13 @@ namespace HMA.API
 
             CorsStartup.Init(services, Configuration);
 
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddJsonOptions(jsonOptions =>
+                {
+                    var jsonStringEnumConverter = new JsonStringEnumConverter();
+                    jsonOptions.JsonSerializerOptions.Converters.Add(jsonStringEnumConverter);
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

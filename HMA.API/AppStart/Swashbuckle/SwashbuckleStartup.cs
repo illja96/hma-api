@@ -55,12 +55,10 @@ namespace HMA.API.AppStart.Swashbuckle
                 swaggerGen.IncludeXmlComments(xmlPath);
 
                 swaggerGen.AddSecurityDefinition(
-                    "google-oauth2",
+                    "Google OAuth 2.0",
                     new OpenApiSecurityScheme()
                     {
                         Type = SecuritySchemeType.OAuth2,
-                        Name = "google-oauth2",
-                        Description = "Google OAuth 2",
                         Flows = new OpenApiOAuthFlows()
                         {
                             Implicit = new OpenApiOAuthFlow()
@@ -76,6 +74,15 @@ namespace HMA.API.AppStart.Swashbuckle
                         {
                             { "x-tokenName", new OpenApiString("id_token") }
                         }
+                    });
+
+                swaggerGen.AddSecurityDefinition(
+                    "Google ID token",
+                    new OpenApiSecurityScheme()
+                    {
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "bearer",
+                        BearerFormat = "JWT"
                     });
             });
         }

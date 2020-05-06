@@ -15,14 +15,14 @@ namespace HMA.BLL.Tier3.Services
 {
     public class UserT3Service : IUserT3Service
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         private readonly IUserT2Service _userService;
 
         public UserT3Service(
-            IHttpContextAccessor httpContextAccessor,
             IMapper mapper,
+            IHttpContextAccessor httpContextAccessor,
             IUserT2Service userService)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -46,7 +46,7 @@ namespace HMA.BLL.Tier3.Services
             catch (UserEmailNotVerifiedException)
             {
                 var modelState = new ModelStateDictionary();
-                modelState.AddModelError(nameof(UserInfo.EmailVerified), "Email is not verified");
+                modelState.AddModelError(nameof(UserInfo.IsEmailVerified), "Email is not verified");
 
                 var badResult = new BadRequestObjectResult(modelState);
                 return badResult;
@@ -77,7 +77,7 @@ namespace HMA.BLL.Tier3.Services
             catch (UserEmailNotVerifiedException)
             {
                 var modelState = new ModelStateDictionary();
-                modelState.AddModelError(nameof(UserInfo.EmailVerified), "Email is not verified");
+                modelState.AddModelError(nameof(UserInfo.IsEmailVerified), "Email is not verified");
 
                 var badResult = new BadRequestObjectResult(modelState);
                 return badResult;
@@ -105,7 +105,7 @@ namespace HMA.BLL.Tier3.Services
             catch (UserEmailNotVerifiedException)
             {
                 var modelState = new ModelStateDictionary();
-                modelState.AddModelError(nameof(UserInfo.EmailVerified), "Email is not verified");
+                modelState.AddModelError(nameof(UserInfo.IsEmailVerified), "Email is not verified");
 
                 var badResult = new BadRequestObjectResult(modelState);
                 return badResult;
@@ -117,7 +117,7 @@ namespace HMA.BLL.Tier3.Services
             }
         }
 
-        public async Task<StatusCodeResult> DeleteProfileAsync(CancellationToken cancellationToken = default)
+        public async Task<ObjectResult> DeleteProfileAsync(CancellationToken cancellationToken = default)
         {
             var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
             var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
@@ -128,12 +128,12 @@ namespace HMA.BLL.Tier3.Services
                     userFromIdentity.GoogleId,
                     cancellationToken);
 
-                var result = new OkResult();
+                var result = new OkObjectResult(null);
                 return result;
             }
             catch (UserNotFoundException)
             {
-                var badResult = new NotFoundResult();
+                var badResult = new NotFoundObjectResult(null);
                 return badResult;
             }
         }

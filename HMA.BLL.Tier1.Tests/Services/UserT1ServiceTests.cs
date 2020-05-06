@@ -289,7 +289,7 @@ namespace HMA.BLL.Tier1.Tests.Services
             {
                 GoogleId = 123456789,
                 Email = "test@gmail.com",
-                EmailVerified = true
+                IsEmailVerified = true
             };
 
             _userRepositoryMock
@@ -324,7 +324,7 @@ namespace HMA.BLL.Tier1.Tests.Services
             {
                 GoogleId = 123456789,
                 Email = "test@gmail.com",
-                EmailVerified = false
+                IsEmailVerified = false
             };
 
             // Act
@@ -341,7 +341,7 @@ namespace HMA.BLL.Tier1.Tests.Services
             {
                 GoogleId = 123456789,
                 Email = "test@gmail.com",
-                EmailVerified = true
+                IsEmailVerified = true
             };
 
             _userRepositoryMock
@@ -364,7 +364,7 @@ namespace HMA.BLL.Tier1.Tests.Services
             {
                 GoogleId = 123456789,
                 Email = "test@gmail.com",
-                EmailVerified = true
+                IsEmailVerified = true
             };
 
             _userRepositoryMock
@@ -399,7 +399,7 @@ namespace HMA.BLL.Tier1.Tests.Services
             {
                 GoogleId = 123456789,
                 Email = "test@gmail.com",
-                EmailVerified = false
+                IsEmailVerified = false
             };
 
             // Act
@@ -416,7 +416,7 @@ namespace HMA.BLL.Tier1.Tests.Services
             {
                 GoogleId = 123456789,
                 Email = "test@gmail.com",
-                EmailVerified = true
+                IsEmailVerified = true
             };
 
             // TODO: Check with exception throws when no single model found to update

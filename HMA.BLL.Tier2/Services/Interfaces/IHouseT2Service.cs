@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using HMA.BLL.Tier1.Exceptions.House;
 using HMA.DTO.Models.House;
 using MongoDB.Bson;
 
@@ -11,8 +12,7 @@ namespace HMA.BLL.Tier2.Services.Interfaces
         /// Get available houses for provided user
         /// </summary>
         /// <param name="userId">User id</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<AvailableHousesInfo> GetAvailableHousesForUserAsync(
             decimal userId,
             CancellationToken cancellationToken = default);
@@ -22,8 +22,8 @@ namespace HMA.BLL.Tier2.Services.Interfaces
         /// </summary>
         /// <param name="houseId">House id</param>
         /// <param name="userId">User id</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <exception cref="HouseNotFoundException"></exception>
         Task<HouseSimpleInfo> GetHouseByIdAsync(
             BsonObjectId houseId,
             decimal userId,
@@ -33,8 +33,7 @@ namespace HMA.BLL.Tier2.Services.Interfaces
         /// Create a new house
         /// </summary>
         /// <param name="houseCreationRequest">House creation request</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         Task<HouseSimpleInfo> CreateHouseAsync(
             HouseCreationRequest houseCreationRequest,
             CancellationToken cancellationToken = default);
@@ -44,8 +43,8 @@ namespace HMA.BLL.Tier2.Services.Interfaces
         /// </summary>
         /// <param name="houseId">House id</param>
         /// <param name="userId">User id</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <exception cref="HouseNotFoundException"></exception>
         Task DeleteHouseByIdAsync(
             BsonObjectId houseId,
             decimal userId,

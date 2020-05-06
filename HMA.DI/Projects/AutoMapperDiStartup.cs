@@ -12,8 +12,10 @@ namespace HMA.DI.Projects
         {
             var profiles = new List<Profile>()
             {
+                new BsonProfile(),
                 new HouseProfile(),
-                new UserProfile()
+                new UserProfile(),
+                new TransactionProfile()
             };
 
             var assemblies = new List<Assembly>()

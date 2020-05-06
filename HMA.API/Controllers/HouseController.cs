@@ -22,8 +22,7 @@ namespace HMA.API.Controllers
         /// <summary>
         /// Get all houses
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         [HttpGet("houses")]
         [ProducesResponseType(typeof(AvailableHousesInfoViewModel), 200)]
         public async Task<IActionResult> GetHousesAsync(CancellationToken cancellationToken = default)
@@ -36,8 +35,7 @@ namespace HMA.API.Controllers
         /// Get house by id
         /// </summary>
         /// <param name="houseId">House id</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         [HttpGet("houses/{houseId}")]
         [ProducesResponseType(typeof(HouseSimpleInfoViewModel), 200)]
         [ProducesResponseType(404)]
@@ -53,14 +51,19 @@ namespace HMA.API.Controllers
         /// Create new house
         /// </summary>
         /// <param name="houseCreationRequestViewModel">House creation request</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         [HttpPost("houses")]
         [ProducesResponseType(typeof(HouseSimpleInfoViewModel), 200)]
         public async Task<IActionResult> CreateHouseAsync(
             [FromBody] HouseCreationRequestViewModel houseCreationRequestViewModel,
             CancellationToken cancellationToken = default)
         {
+            if (!ModelState.IsValid)
+            {
+                var badResult = new BadRequestObjectResult(ModelState);
+                return badResult;
+            }
+
             var result = await _houseService.CreateHouseAsync(houseCreationRequestViewModel, cancellationToken);
             return result;
         }
@@ -69,8 +72,7 @@ namespace HMA.API.Controllers
         /// Delete house by id
         /// </summary>
         /// <param name="houseId">House id</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         [HttpDelete("houses/{houseId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]

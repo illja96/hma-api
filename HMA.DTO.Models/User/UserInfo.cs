@@ -11,7 +11,7 @@ namespace HMA.DTO.Models.User
 
         public string Email { get; set; }
 
-        public bool EmailVerified { get; set; }
+        public bool IsEmailVerified { get; set; }
 
         public string GivenName { get; set; }
 

@@ -21,8 +21,7 @@ namespace HMA.API.Controllers
         /// <summary>
         /// Register
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         [HttpPost("users/register")]
         [ProducesResponseType(typeof(UserInfoViewModel), 200)]
         [ProducesResponseType(400)]
@@ -36,8 +35,7 @@ namespace HMA.API.Controllers
         /// <summary>
         /// Get current user
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         [HttpGet("users/me")]
         [ProducesResponseType(typeof(UserInfoViewModel), 200)]
         [ProducesResponseType(404)]
@@ -50,8 +48,7 @@ namespace HMA.API.Controllers
         /// <summary>
         /// Updates current user
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         [HttpPatch("users/me")]
         [ProducesResponseType(typeof(UserInfoViewModel), 200)]
         [ProducesResponseType(400)]
@@ -65,8 +62,7 @@ namespace HMA.API.Controllers
         /// <summary>
         /// Delete user profile
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Cancellation token</param>
         [HttpDelete("users/me")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
