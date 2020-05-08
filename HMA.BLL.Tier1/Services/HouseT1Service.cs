@@ -80,7 +80,8 @@ namespace HMA.BLL.Tier1.Services
                 Id = hi.Id,
                 OwnerId = hi.OwnerId,
                 Name = hi.Name,
-                MemberIds = hi.MemberIds
+                MemberIds = hi.MemberIds,
+                CreationDate = hi.CreationDate
             });
 
             var pipeline = new EmptyPipelineDefinition<HouseInfo>()
@@ -115,7 +116,8 @@ namespace HMA.BLL.Tier1.Services
                 Id = hi.Id,
                 OwnerId = hi.OwnerId,
                 Name = hi.Name,
-                MemberIds = hi.MemberIds
+                MemberIds = hi.MemberIds,
+                CreationDate = hi.CreationDate
             });
 
             var pipeline = new EmptyPipelineDefinition<HouseInfo>()
@@ -141,7 +143,8 @@ namespace HMA.BLL.Tier1.Services
                 Id = hi.Id,
                 OwnerId = hi.OwnerId,
                 Name = hi.Name,
-                MemberIds = hi.MemberIds
+                MemberIds = hi.MemberIds,
+                CreationDate = hi.CreationDate
             });
 
             var pipeline = new EmptyPipelineDefinition<HouseInfo>()
