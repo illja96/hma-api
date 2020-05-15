@@ -1,9 +1,9 @@
 FROM illja96/dotnet-core-sdk-openjdk:latest AS build
 WORKDIR /app
 
-RUN echo ${build.number}
-RUN echo ${build_number}
-RUN echo ${BUILD_NUMBER}
+RUN echo "${BUILD_NUMBER}"
+RUN echo "${build_number}"
+RUN echo "${build.number}"
 
 RUN dotnet tool install --global dotnet-sonarscanner
 ENV PATH="${PATH}:/root/.dotnet/tools"
