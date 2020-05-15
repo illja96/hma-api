@@ -4,6 +4,11 @@ ARG $SONAR_HOST_URL
 ARG $SONAR_PROJECTKEY
 ARG $SONAR_LOGIN
 
+RUN echo "${BUILD_NUMBER}"
+RUN echo "${SONAR_HOST_URL}"
+RUN echo "${SONAR_PROJECTKEY}"
+RUN echo "${SONAR_LOGIN}"
+
 WORKDIR /app
 
 RUN dotnet tool install --global dotnet-sonarscanner
