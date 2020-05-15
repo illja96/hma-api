@@ -1,17 +1,18 @@
 FROM illja96/dotnet-core-sdk-openjdk:latest AS build
-ARG BUILD_NUMBER
-ARG SONAR_HOST_URL
-ARG SONAR_PROJECTKEY
-ARG SONAR_LOGIN
 
-RUN echo "ARG TEST"
-RUN echo "${BUILD_NUMBER}"
-RUN echo "${SONAR_HOST_URL}"
-RUN echo "${SONAR_PROJECTKEY}"
-RUN echo "${SONAR_LOGIN}"
+ARG BUILD_NUMBER
+RUN test -n "${BUILD_NUMBER}" || (echo "BUILD_NUMBER argument not provided" && false)
+
+ARG SONAR_HOST_URL
+RUN test -n "${SONAR_HOST_URL}" || (echo "SONAR_HOST_URL argument not provided" && false)
+
+ARG SONAR_PROJECTKEY
+RUN test -n "${SONAR_PROJECTKEY}" || (echo "SONAR_PROJECTKEY argument not provided" && false)
+
+ARG SONAR_LOGIN
+RUN test -n "${SONAR_LOGIN}" || (echo "SONAR_LOGIN argument not provided" && false)
 
 WORKDIR /app
-
 RUN dotnet tool install --global dotnet-sonarscanner
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
