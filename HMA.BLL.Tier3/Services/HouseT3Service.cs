@@ -34,8 +34,7 @@ namespace HMA.BLL.Tier3.Services
 
         public async Task<ObjectResult> GetHousesAsync(CancellationToken cancellationToken = default)
         {
-            var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-            var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
+            var userFromIdentity = GetUserFromIdentity();
 
             var availableHousesInfo = await _houseService.GetAvailableHousesForUserAsync(userFromIdentity.GoogleId, cancellationToken);
             var availableHousesInfoViewModel = _mapper.Map<AvailableHousesInfoViewModel>(availableHousesInfo);
@@ -62,8 +61,7 @@ namespace HMA.BLL.Tier3.Services
                 return badResult;
             }
 
-            var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-            var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
+            var userFromIdentity = GetUserFromIdentity();
 
             try
             {
@@ -87,8 +85,7 @@ namespace HMA.BLL.Tier3.Services
             HouseCreationRequestViewModel houseCreationRequestViewModel,
             CancellationToken cancellationToken = default)
         {
-            var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-            var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
+            var userFromIdentity = GetUserFromIdentity();
 
             var houseCreationRequest = _mapper.Map<HouseCreationRequest>(houseCreationRequestViewModel);
             houseCreationRequest.OwnerId = userFromIdentity.GoogleId;
@@ -119,8 +116,7 @@ namespace HMA.BLL.Tier3.Services
                 return badResult;
             }
 
-            var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-            var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
+            var userFromIdentity = GetUserFromIdentity();
 
             try
             {
@@ -139,6 +135,14 @@ namespace HMA.BLL.Tier3.Services
             }
 
             // TODO: Implement house leave for member
+        }
+
+        private UserInfo GetUserFromIdentity()
+        {
+            var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
+            var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
+
+            return userFromIdentity;
         }
     }
 }

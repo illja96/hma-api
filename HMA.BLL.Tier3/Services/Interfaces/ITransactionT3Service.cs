@@ -15,7 +15,7 @@ namespace HMA.BLL.Tier3.Services.Interfaces
         /// </summary>
         /// <param name="houseId">House id</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public Task<ObjectResult> GetUsedTagsByHouseIdAsync(
+        Task<ObjectResult> GetUsedTagsByHouseIdAsync(
             string houseId,
             CancellationToken cancellationToken = default);
 
@@ -24,7 +24,7 @@ namespace HMA.BLL.Tier3.Services.Interfaces
         /// </summary>
         /// <param name="houseId">House id</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public Task<ObjectResult> GetTransactionsByHouseIdAsync(
+        Task<ObjectResult> GetTransactionsByHouseIdAsync(
             string houseId, 
             CancellationToken cancellationToken = default);
 
@@ -33,7 +33,7 @@ namespace HMA.BLL.Tier3.Services.Interfaces
         /// </summary>
         /// <param name="transactionCreationRequestViewModel">Transaction creation request</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public Task<ObjectResult> CreateTransactionAsync(
+        Task<ObjectResult> CreateTransactionAsync(
             TransactionCreationRequestViewModel transactionCreationRequestViewModel,
             CancellationToken cancellationToken = default);
 
@@ -43,7 +43,7 @@ namespace HMA.BLL.Tier3.Services.Interfaces
         /// <param name="houseId">House id</param>
         /// <param name="transactionId">Transaction id</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        public Task<ObjectResult> DeleteTransactionAsync(
+        Task<ObjectResult> DeleteTransactionAsync(
             string houseId,
             string transactionId,
             CancellationToken cancellationToken = default);

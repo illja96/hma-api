@@ -14,6 +14,7 @@ namespace HMA.DI.Projects
             {
                 new BsonProfile(),
                 new HouseProfile(),
+                new HouseInviteProfile(),
                 new UserProfile(),
                 new TransactionProfile()
             };

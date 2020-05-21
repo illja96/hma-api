@@ -4,9 +4,11 @@ using System;
 
 namespace HMA.DTO.Models.Invite
 {
-    public class HouseInvite : BaseDalModel
+    public class HouseInviteInfo : BaseDalModel
     {
         public BsonObjectId HouseId { get; set; }
+
+        public decimal InvitedByUserId { get; set; }
 
         public string UserEmail { get; set; }
 

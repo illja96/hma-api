@@ -9,7 +9,10 @@ namespace HMA.DI.Projects
         public static void Init(IServiceCollection services)
         {
             services.AddSingleton<IHouseT2Service, HouseT2Service>();
+            services.AddSingleton<IHouseInviteT2Service, HouseInviteT2Service>();
+
             services.AddSingleton<IUserT2Service, UserT2Service>();
+
             services.AddScoped<ITransactionT2Service, TransactionT2Service>();
         }
     }

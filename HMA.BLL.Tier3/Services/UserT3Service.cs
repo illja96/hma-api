@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -32,8 +33,7 @@ namespace HMA.BLL.Tier3.Services
 
         public async Task<ObjectResult> RegisterAsync(CancellationToken cancellationToken = default)
         {
-            var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-            var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
+            var userFromIdentity = GetUserFromIdentity();
 
             try
             {
@@ -63,8 +63,7 @@ namespace HMA.BLL.Tier3.Services
 
         public async Task<ObjectResult> GetCurrentAsync(CancellationToken cancellationToken = default)
         {
-            var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-            var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
+            var userFromIdentity = GetUserFromIdentity();
 
             try
             {
@@ -91,8 +90,7 @@ namespace HMA.BLL.Tier3.Services
 
         public async Task<ObjectResult> UpdateCurrentAsync(CancellationToken cancellationToken = default)
         {
-            var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-            var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
+            var userFromIdentity = GetUserFromIdentity();
 
             try
             {
@@ -119,8 +117,7 @@ namespace HMA.BLL.Tier3.Services
 
         public async Task<ObjectResult> DeleteProfileAsync(CancellationToken cancellationToken = default)
         {
-            var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-            var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
+            var userFromIdentity = GetUserFromIdentity();
 
             try
             {
@@ -136,6 +133,14 @@ namespace HMA.BLL.Tier3.Services
                 var badResult = new NotFoundObjectResult(null);
                 return badResult;
             }
+        }
+
+        private UserInfo GetUserFromIdentity()
+        {
+            var claimsIdentity = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
+            var userFromIdentity = _mapper.Map<UserInfo>(claimsIdentity);
+
+            return userFromIdentity;
         }
     }
 }

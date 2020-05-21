@@ -11,6 +11,7 @@ namespace HMA.AutoMapper.Tests.Factory
         {
             typeof(BsonProfile),
             typeof(HouseProfile),
+            typeof(HouseInviteProfile),
             typeof(UserProfile),
             typeof(TransactionProfile)
         };
