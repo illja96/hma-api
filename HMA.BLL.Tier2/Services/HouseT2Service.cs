@@ -37,35 +37,33 @@ namespace HMA.BLL.Tier2.Services
                 userId,
                 cancellationToken);
 
-            var ownerUserIds = ownedHouseInfos
-                .Select(ohi => ohi.OwnerId)
-                .Distinct()
-                .ToList();
-            var ownerUserInfos = await _userService.GetByIdsAsync(ownerUserIds, cancellationToken);
-
-            ownedHouseInfos.ForEach(ohi =>
-            {
-                var ownerInfo = ownerUserInfos.FirstOrDefault(oui => oui.GoogleId == ohi.OwnerId);
-                ohi.OwnerInfo = ownerInfo;
-            });
-
             var membershipHouseInfos = await _houseService.GetMembershipHouseInfosAsync(
                 userId,
                 cancellationToken);
 
-            var membershipUserIds = membershipHouseInfos
-                .SelectMany(mhi => mhi.MemberIds)
+            var userIds = new List<decimal>()
+                .Concat(ownedHouseInfos.Select(ohi => ohi.OwnerId))
+                .Concat(ownedHouseInfos.SelectMany(ohi => ohi.MemberIds))
+                .Concat(membershipHouseInfos.Select(mhi => mhi.OwnerId))
+                .Concat(membershipHouseInfos.SelectMany(mhi => mhi.MemberIds))
                 .Distinct()
                 .ToList();
-            var membershipUserInfos = await _userService.GetByIdsAsync(membershipUserIds, cancellationToken);
 
-            membershipHouseInfos.ForEach(mhi =>
-            {
-                var memberInfos = membershipUserInfos
-                    .Where(mui => mhi.MemberIds.Contains(mui.GoogleId))
-                    .ToList();
-                mhi.MemberInfos = memberInfos;
-            });
+            var userInfos = await _userService.GetByIdsAsync(userIds, cancellationToken);
+
+            ownedHouseInfos
+                .Concat(membershipHouseInfos)
+                .ToList()
+                .ForEach(hi =>
+                {
+                    var ownerInfo = userInfos.First(ui => ui.GoogleId == hi.OwnerId);
+                    hi.OwnerInfo = ownerInfo;
+
+                    var memberInfos = userInfos
+                        .Where(ui => hi.MemberIds.Contains(ui.GoogleId))
+                        .ToList();
+                    hi.MemberInfos = memberInfos;
+                });
 
             var availableHousesInfo = new AvailableHousesInfo()
             {
