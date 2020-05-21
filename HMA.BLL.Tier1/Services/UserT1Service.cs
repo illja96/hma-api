@@ -98,48 +98,48 @@ namespace HMA.BLL.Tier1.Services
         }
 
         public async Task<UserInfo> RegisterAsync(
-            UserInfo user,
+            UserInfo userInfo,
             CancellationToken cancellationToken = default)
         {
-            ThrowExceptionIfUserEmailIsNotVerified(user);
+            ThrowExceptionIfUserEmailIsNotVerified(userInfo);
 
-            var isUserExists = await ExistsAsync(user.GoogleId, cancellationToken);
+            var isUserExists = await ExistsAsync(userInfo.GoogleId, cancellationToken);
             if (isUserExists)
             {
                 throw new UserDuplicateInsertionException();
             }
 
-            user.RegistrationDate = DateTime.UtcNow;
-            user.LastUpdateDate = user.RegistrationDate;
+            userInfo.RegistrationDate = DateTime.UtcNow;
+            userInfo.LastUpdateDate = userInfo.RegistrationDate;
 
-            user = await _userInfoRepository.InsertAsync(user, cancellationToken);
+            userInfo = await _userInfoRepository.InsertAsync(userInfo, cancellationToken);
 
-            return user;
+            return userInfo;
         }
 
         public async Task<UserInfo> UpdateAsync(
-            UserInfo user,
+            UserInfo userInfo,
             CancellationToken cancellationToken = default)
         {
-            ThrowExceptionIfUserEmailIsNotVerified(user);
-            
-            user.LastUpdateDate = DateTime.UtcNow;
+            ThrowExceptionIfUserEmailIsNotVerified(userInfo);
 
-            var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, user.GoogleId);
+            userInfo.LastUpdateDate = DateTime.UtcNow;
+
+            var filter = Builders<UserInfo>.Filter.Eq(ui => ui.GoogleId, userInfo.GoogleId);
             var update = Builders<UserInfo>.Update
-                .Set(ui => ui.Email, user.Email)
-                .Set(ui => ui.IsEmailVerified, user.IsEmailVerified)
-                .Set(ui => ui.PictureUrl, user.PictureUrl)
-                .Set(ui => ui.Locale, user.Locale)
-                .Set(ui => ui.GivenName, user.GivenName)
-                .Set(ui => ui.FamilyName, user.FamilyName)
-                .Set(ui => ui.LastUpdateDate, user.LastUpdateDate);
+                .Set(ui => ui.Email, userInfo.Email)
+                .Set(ui => ui.IsEmailVerified, userInfo.IsEmailVerified)
+                .Set(ui => ui.PictureUrl, userInfo.PictureUrl)
+                .Set(ui => ui.Locale, userInfo.Locale)
+                .Set(ui => ui.GivenName, userInfo.GivenName)
+                .Set(ui => ui.FamilyName, userInfo.FamilyName)
+                .Set(ui => ui.LastUpdateDate, userInfo.LastUpdateDate);
 
             await _userInfoRepository.UpdateOneAsync(filter, update, cancellationToken);
 
-            user = await _userInfoRepository.FindOneAsync(filter, cancellationToken);
+            userInfo = await _userInfoRepository.FindOneAsync(filter, cancellationToken);
 
-            return user;
+            return userInfo;
         }
 
         public async Task DeleteByIdAsync(
