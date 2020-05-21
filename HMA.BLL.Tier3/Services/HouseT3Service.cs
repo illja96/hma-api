@@ -101,7 +101,7 @@ namespace HMA.BLL.Tier3.Services
             return result;
         }
 
-        public async Task<ObjectResult> DeleteHouseByIdAsync(
+        public async Task<ObjectResult> DeleteOrLeaveHouseByIdAsync(
             string houseId,
             CancellationToken cancellationToken = default)
         {
@@ -137,6 +137,8 @@ namespace HMA.BLL.Tier3.Services
                 var badResult = new NotFoundObjectResult(null);
                 return badResult;
             }
+
+            // TODO: Implement house leave for member
         }
     }
 }

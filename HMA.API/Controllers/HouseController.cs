@@ -69,18 +69,19 @@ namespace HMA.API.Controllers
         }
 
         /// <summary>
-        /// Delete house by id
+        /// Delete house by id if user is an owner.
+        /// Leave a house by id if user is a member
         /// </summary>
         /// <param name="houseId">House id</param>
         /// <param name="cancellationToken">Cancellation token</param>
         [HttpDelete("houses/{houseId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> DeleteHouseByIdAsync(
+        public async Task<IActionResult> DeleteOrLeaveHouseByIdAsync(
             [FromRoute] string houseId,
             CancellationToken cancellationToken = default)
         {
-            var result = await _houseService.DeleteHouseByIdAsync(houseId, cancellationToken);
+            var result = await _houseService.DeleteOrLeaveHouseByIdAsync(houseId, cancellationToken);
             return result;
         }
     }

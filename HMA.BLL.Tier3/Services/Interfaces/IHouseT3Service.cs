@@ -36,12 +36,12 @@ namespace HMA.BLL.Tier3.Services.Interfaces
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Delete house by id.
-        /// Deletes house only of current user is owner of a house
+        /// Delete house by id if user is an owner.
+        /// Leave house by id if user is a member
         /// </summary>
         /// <param name="houseId">House id</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        Task<ObjectResult> DeleteHouseByIdAsync(
+        Task<ObjectResult> DeleteOrLeaveHouseByIdAsync(
             string houseId,
             CancellationToken cancellationToken = default);
     }

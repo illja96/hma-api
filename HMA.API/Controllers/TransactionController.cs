@@ -11,11 +11,11 @@ namespace HMA.API.Controllers
 {
     [ApiController]
     [Authorize(PolicyConstants.UserRegistered)]
-    public class TransactionsController : Controller
+    public class TransactionController : Controller
     {
         private readonly ITransactionT3Service _transactionT3Service;
 
-        public TransactionsController(ITransactionT3Service transactionT3Service)
+        public TransactionController(ITransactionT3Service transactionT3Service)
         {
             _transactionT3Service = transactionT3Service;
         }
