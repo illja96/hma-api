@@ -56,7 +56,7 @@ namespace HMA.BLL.Tier2.Services
                 .ToList()
                 .ForEach(hi =>
                 {
-                    var ownerInfo = userInfos.First(ui => ui.GoogleId == hi.OwnerId);
+                    var ownerInfo = userInfos.FirstOrDefault(ui => ui.GoogleId == hi.OwnerId);
                     hi.OwnerInfo = ownerInfo;
 
                     var memberInfos = userInfos
