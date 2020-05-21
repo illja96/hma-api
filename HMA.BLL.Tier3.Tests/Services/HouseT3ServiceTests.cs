@@ -122,8 +122,9 @@ namespace HMA.BLL.Tier3.Tests.Services
             Assert.IsInstanceOfType(result.Value, typeof(HouseSimpleInfoViewModel));
         }
 
+        // TODO: Update tests after implementing DeleteOrLeaveHouseByIdAsync
         [TestMethod]
-        public async Task DeleteHouseByIdAsync_ReturnsOkObjectResult()
+        public async Task DeleteOrLeaveHouseByIdAsyncByIdAsync_ReturnsOkObjectResult()
         {
             // Arrange
             _httpContextAccessorMock
@@ -133,7 +134,7 @@ namespace HMA.BLL.Tier3.Tests.Services
             const string houseId = "000000000000000000000000";
             
             // Act
-            var result = await _houseT3Service.DeleteHouseByIdAsync(houseId);
+            var result = await _houseT3Service.DeleteOrLeaveHouseByIdAsync(houseId);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(OkObjectResult));
