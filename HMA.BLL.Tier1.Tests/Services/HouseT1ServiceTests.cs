@@ -61,7 +61,7 @@ namespace HMA.BLL.Tier1.Tests.Services
         }
 
         [TestMethod]
-        public async Task GetHouseInfoByIdAsync_ReturnsHouseInfo()
+        public async Task GetHouseInfoByIdAvailableForUserAsync_ReturnsHouseInfo()
         {
             // Arrange
             var houseInfo = new HouseInfo()
@@ -78,14 +78,14 @@ namespace HMA.BLL.Tier1.Tests.Services
                 .ReturnsAsync(houseInfo);
 
             // Act
-            var result = await _houseService.GetHouseInfoByIdAsync(houseInfo.Id, houseInfo.OwnerId);
+            var result = await _houseService.GetHouseInfoByIdAvailableForUserAsync(houseInfo.Id, houseInfo.OwnerId);
 
             // Assert
             Assert.AreSame(houseInfo, result);
         }
 
         [TestMethod]
-        public async Task GetHouseInfoByIdAsync_HouseNotFound_ThrowsHouseNotFoundException()
+        public async Task GetHouseInfoByIdAvailableForUserAsync_HouseNotFound_ThrowsHouseNotFoundException()
         {
             // Arrange
             var houseInfo = new HouseInfo()
@@ -106,11 +106,11 @@ namespace HMA.BLL.Tier1.Tests.Services
             // Act
             // Assert
             await Assert.ThrowsExceptionAsync<HouseNotFoundException>(
-                () => _houseService.GetHouseInfoByIdAsync(houseInfo.Id, houseInfo.OwnerId));
+                () => _houseService.GetHouseInfoByIdAvailableForUserAsync(houseInfo.Id, houseInfo.OwnerId));
         }
 
         [TestMethod]
-        public async Task GetHouseInfoByIdAsync_InvalidOperationException_ThrowsException()
+        public async Task GetHouseInfoByIdAvailableForUserAsync_InvalidOperationException_ThrowsException()
         {
             // Arrange
             var houseInfo = new HouseInfo()
@@ -129,11 +129,11 @@ namespace HMA.BLL.Tier1.Tests.Services
             // Act
             // Assert
             await Assert.ThrowsExceptionAsync<InvalidOperationException>(
-                () => _houseService.GetHouseInfoByIdAsync(houseInfo.Id, houseInfo.OwnerId));
+                () => _houseService.GetHouseInfoByIdAvailableForUserAsync(houseInfo.Id, houseInfo.OwnerId));
         }
 
         [TestMethod]
-        public async Task GetHouseInfoByIdAsync_TimeoutException_ThrowsException()
+        public async Task GetHouseInfoByIdAvailableForUserAsync_TimeoutException_ThrowsException()
         {
             // Arrange
             var houseInfo = new HouseInfo()
@@ -152,11 +152,11 @@ namespace HMA.BLL.Tier1.Tests.Services
             // Act
             // Assert
             await Assert.ThrowsExceptionAsync<TimeoutException>(
-                () => _houseService.GetHouseInfoByIdAsync(houseInfo.Id, houseInfo.OwnerId));
+                () => _houseService.GetHouseInfoByIdAvailableForUserAsync(houseInfo.Id, houseInfo.OwnerId));
         }
 
         [TestMethod]
-        public async Task GetSimpleHouseByIdAsync_ReturnsHouseSimpleInfo()
+        public async Task GetSimpleHouseByIdAvailableForUserAsync_ReturnsHouseSimpleInfo()
         {
             // Arrange
             var houseSimpleInfo = new HouseSimpleInfo()
@@ -173,14 +173,14 @@ namespace HMA.BLL.Tier1.Tests.Services
                 .ReturnsAsync(houseSimpleInfo);
 
             // Act
-            var result = await _houseService.GetSimpleHouseByIdAsync(houseSimpleInfo.Id, houseSimpleInfo.OwnerId);
+            var result = await _houseService.GetSimpleHouseInfoByIdAvailableForUserAsync(houseSimpleInfo.Id, houseSimpleInfo.OwnerId);
 
             // Assert
             Assert.AreSame(houseSimpleInfo, result);
         }
 
         [TestMethod]
-        public async Task GetSimpleHouseByIdAsync_HouseNotFound_ThrowsHouseNotFoundException()
+        public async Task GetSimpleHouseByIdAvailableForUserAsync_HouseNotFound_ThrowsHouseNotFoundException()
         {
             // Arrange
             var houseSimpleInfo = new HouseSimpleInfo()
@@ -201,11 +201,11 @@ namespace HMA.BLL.Tier1.Tests.Services
             // Act
             // Assert
             await Assert.ThrowsExceptionAsync<HouseNotFoundException>(
-                () => _houseService.GetSimpleHouseByIdAsync(houseSimpleInfo.Id, houseSimpleInfo.OwnerId));
+                () => _houseService.GetSimpleHouseInfoByIdAvailableForUserAsync(houseSimpleInfo.Id, houseSimpleInfo.OwnerId));
         }
 
         [TestMethod]
-        public async Task GetSimpleHouseByIdAsync_InvalidOperationException_ThrowsException()
+        public async Task GetSimpleHouseByIdAvailableForUserAsync_InvalidOperationException_ThrowsException()
         {
             // Arrange
             var houseSimpleInfo = new HouseSimpleInfo()
@@ -224,11 +224,11 @@ namespace HMA.BLL.Tier1.Tests.Services
             // Act
             // Assert
             await Assert.ThrowsExceptionAsync<InvalidOperationException>(
-                () => _houseService.GetSimpleHouseByIdAsync(houseSimpleInfo.Id, houseSimpleInfo.OwnerId));
+                () => _houseService.GetSimpleHouseInfoByIdAvailableForUserAsync(houseSimpleInfo.Id, houseSimpleInfo.OwnerId));
         }
 
         [TestMethod]
-        public async Task GetSimpleHouseByIdAsync_TimeoutException_ThrowsException()
+        public async Task GetSimpleHouseByIdAvailableForUserAsync_TimeoutException_ThrowsException()
         {
             // Arrange
             var houseSimpleInfo = new HouseSimpleInfo()
@@ -247,7 +247,7 @@ namespace HMA.BLL.Tier1.Tests.Services
             // Act
             // Assert
             await Assert.ThrowsExceptionAsync<TimeoutException>(
-                () => _houseService.GetSimpleHouseByIdAsync(houseSimpleInfo.Id, houseSimpleInfo.OwnerId));
+                () => _houseService.GetSimpleHouseInfoByIdAvailableForUserAsync(houseSimpleInfo.Id, houseSimpleInfo.OwnerId));
         }
 
         [TestMethod]
@@ -269,14 +269,14 @@ namespace HMA.BLL.Tier1.Tests.Services
                 .ReturnsAsync(houseSimpleInfos);
 
             // Act
-            var result = await _houseService.GetOwnedHouseInfosAsync(houseSimpleInfos.First().OwnerId);
+            var result = await _houseService.GetOwnedHouseSimpleInfosOfUserAsync(houseSimpleInfos.First().OwnerId);
 
             // Assert
             Assert.AreSame(houseSimpleInfos, result);
         }
 
         [TestMethod]
-        public async Task GetMembershipHouseInfosAsync_ReturnMembershipHouses()
+        public async Task GetMembershipHouseSimpleInfosOfUserAsync_ReturnMembershipHouses()
         {
             // Arrange
             var houseSimpleInfos = new List<HouseSimpleInfo>()
@@ -294,7 +294,7 @@ namespace HMA.BLL.Tier1.Tests.Services
                 .ReturnsAsync(houseSimpleInfos);
 
             // Act
-            var result = await _houseService.GetMembershipHouseInfosAsync(houseSimpleInfos.First().OwnerId);
+            var result = await _houseService.GetMembershipHouseSimpleInfosOfUserAsync(houseSimpleInfos.First().OwnerId);
 
             // Assert
             Assert.AreSame(houseSimpleInfos, result);
@@ -318,7 +318,7 @@ namespace HMA.BLL.Tier1.Tests.Services
 
             // Act
             // Assert
-            await _houseService.DeleteHouseByIdAsync(houseInfo.Id, houseInfo.OwnerId);
+            await _houseService.DeleteHouseByIdOwnedByUserAsync(houseInfo.Id, houseInfo.OwnerId);
         }
 
         [TestMethod]
@@ -340,7 +340,7 @@ namespace HMA.BLL.Tier1.Tests.Services
             // Act
             // Assert
             await Assert.ThrowsExceptionAsync<HouseNotFoundException>(() =>
-                _houseService.DeleteHouseByIdAsync(houseInfo.Id, houseInfo.OwnerId));
+                _houseService.DeleteHouseByIdOwnedByUserAsync(houseInfo.Id, houseInfo.OwnerId));
         }
     }
 }

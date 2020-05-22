@@ -13,21 +13,12 @@ namespace HMA.BLL.Tier1.Services.Interfaces
     public interface IHouseT1Service
     {
         /// <summary>
-        /// Create new house
-        /// </summary>
-        /// <param name="houseCreationRequest">House creation request</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        Task<HouseInfo> CreateHouseAsync(
-            HouseCreationRequest houseCreationRequest,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
         /// Get available house info by id for provided user
         /// </summary>
         /// <param name="houseId">House id</param>
         /// <param name="userId">User id</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        Task<HouseInfo> GetHouseInfoByIdAsync(
+        Task<HouseInfo> GetHouseInfoByIdAvailableForUserAsync(
             BsonObjectId houseId,
             decimal userId,
             CancellationToken cancellationToken = default);
@@ -39,37 +30,56 @@ namespace HMA.BLL.Tier1.Services.Interfaces
         /// <param name="userId">User id</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <exception cref="HouseNotFoundException"></exception>
-        Task<HouseSimpleInfo> GetSimpleHouseByIdAsync(
+        Task<HouseSimpleInfo> GetSimpleHouseInfoByIdAvailableForUserAsync(
             BsonObjectId houseId,
             decimal userId,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Get owned houses for provided user
+        /// Get  house simple infos by ids
+        /// </summary>
+        /// <param name="houseIds">House ids</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns></returns>
+        Task<List<HouseSimpleInfo>> GetSimpleHouseInfosByIdsAsync(
+            List<BsonObjectId> houseIds,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Get owned simple house infos of provided user
         /// </summary>
         /// <param name="ownerId">Owner (user) id</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        Task<List<HouseSimpleInfo>> GetOwnedHouseInfosAsync(
+        Task<List<HouseSimpleInfo>> GetOwnedHouseSimpleInfosOfUserAsync(
             decimal ownerId,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Get membership houses for provided user
+        /// Get membership house simple infos of provided user
         /// </summary>
         /// <param name="userId">User id</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        Task<List<HouseSimpleInfo>> GetMembershipHouseInfosAsync(
+        Task<List<HouseSimpleInfo>> GetMembershipHouseSimpleInfosOfUserAsync(
             decimal userId,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Delete available house by id for provided user
+        /// Create new house
+        /// </summary>
+        /// <param name="houseCreationRequest">House creation request</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        Task<HouseInfo> CreateHouseAsync(
+            HouseCreationRequest houseCreationRequest,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Delete house owned by provided user
         /// </summary>
         /// <param name="houseId">House id</param>
         /// <param name="userId">User id</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <exception cref="HouseNotFoundException"></exception>
-        Task DeleteHouseByIdAsync(
+        Task DeleteHouseByIdOwnedByUserAsync(
             BsonObjectId houseId,
             decimal userId,
             CancellationToken cancellationToken = default);

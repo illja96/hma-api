@@ -12,11 +12,11 @@ namespace HMA.BLL.Tier2.Services.Interfaces
     public interface IHouseInviteT2Service
     {
         /// <summary>
-        /// Get all invites for provided user
+        /// Get available invites for provided user
         /// </summary>
         /// <param name="userId">User id</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        Task<List<HouseInviteInfo>> GetInvitesByUserIdAsync(
+        Task<List<HouseInviteSimpleInfo>> GetInvitesAvailableForUserAsync(
             decimal userId,
             CancellationToken cancellationToken = default);
 
@@ -28,30 +28,30 @@ namespace HMA.BLL.Tier2.Services.Interfaces
         /// <exception cref="TooManyHouseInvitesException"></exception>
         /// <exception cref="HouseNotFoundException"></exception>
         /// <exception cref="UserNotFoundException"></exception>
-        Task<HouseInviteInfo> CreateInviteAsync(
+        Task<HouseInviteSimpleInfo> CreateInviteAsync(
             HouseInviteCreationRequest houseInviteCreationRequest,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Accept invite for provided user
+        /// Accept invite available for provided user
         /// </summary>
         /// <param name="userId">User id</param>
         /// <param name="inviteId">Invite Id</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <exception cref="HouseInviteNotFoundException"></exception>
-        Task AcceptInviteAsync(
+        Task AcceptInviteAvailableForUserAsync(
             decimal userId,
             BsonObjectId inviteId,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Decline invite for provided user
+        /// Decline invite available for provided user
         /// </summary>
         /// <param name="userId">User id</param>
         /// <param name="inviteId">Invite Id</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <exception cref="HouseInviteNotFoundException"></exception>
-        Task DeclineInviteAsync(
+        Task DeclineInviteAvailableForUserAsync(
             decimal userId,
             BsonObjectId inviteId,
             CancellationToken cancellationToken = default);

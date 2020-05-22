@@ -8,7 +8,7 @@ namespace HMA.DTO.ViewModels.Invite
         /// House id
         /// </summary>
         [Required]
-        public string HosueId { get; set; }
+        public string HouseId { get; set; }
 
         /// <summary>
         /// User email

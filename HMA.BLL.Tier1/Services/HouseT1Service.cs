@@ -27,19 +27,7 @@ namespace HMA.BLL.Tier1.Services
             _houseRepository = houseRepository;
         }
 
-        public async Task<HouseInfo> CreateHouseAsync(
-            HouseCreationRequest houseCreationRequest,
-            CancellationToken cancellationToken = default)
-        {
-            var houseInfo = _mapper.Map<HouseInfo>(houseCreationRequest);
-            houseInfo.CreationDate = DateTime.UtcNow;
-
-            houseInfo = await _houseRepository.InsertAsync(houseInfo, cancellationToken);
-
-            return houseInfo;
-        }
-
-        public async Task<HouseInfo> GetHouseInfoByIdAsync(
+        public async Task<HouseInfo> GetHouseInfoByIdAvailableForUserAsync(
             BsonObjectId houseId,
             decimal userId,
             CancellationToken cancellationToken = default)
@@ -67,9 +55,9 @@ namespace HMA.BLL.Tier1.Services
             }
         }
 
-        public async Task<HouseSimpleInfo> GetSimpleHouseByIdAsync(
-            BsonObjectId houseId, 
-            decimal userId, 
+        public async Task<HouseSimpleInfo> GetSimpleHouseInfoByIdAvailableForUserAsync(
+            BsonObjectId houseId,
+            decimal userId,
             CancellationToken cancellationToken = default)
         {
             var houseFilter = Builders<HouseInfo>.Filter.Eq(hi => hi.Id, houseId);
@@ -105,7 +93,30 @@ namespace HMA.BLL.Tier1.Services
             }
         }
 
-        public async Task<List<HouseSimpleInfo>> GetOwnedHouseInfosAsync(
+        public async Task<List<HouseSimpleInfo>> GetSimpleHouseInfosByIdsAsync(
+            List<BsonObjectId> houseIds,
+            CancellationToken cancellationToken = default)
+        {
+            var filter = Builders<HouseInfo>.Filter.In(hi => hi.Id, houseIds);
+            var projection = Builders<HouseInfo>.Projection.Expression(hi => new HouseSimpleInfo()
+            {
+                Id = hi.Id,
+                OwnerId = hi.OwnerId,
+                Name = hi.Name,
+                MemberIds = hi.MemberIds,
+                CreationDate = hi.CreationDate
+            });
+
+            var pipeline = new EmptyPipelineDefinition<HouseInfo>()
+                .Match(filter)
+                .Project(projection);
+
+            var houseSimpleInfos = await _houseRepository.FindAsync(pipeline, cancellationToken);
+
+            return houseSimpleInfos;
+        }
+
+        public async Task<List<HouseSimpleInfo>> GetOwnedHouseSimpleInfosOfUserAsync(
             decimal ownerId,
             CancellationToken cancellationToken = default)
         {
@@ -130,7 +141,7 @@ namespace HMA.BLL.Tier1.Services
             return houseSimpleInfos;
         }
 
-        public async Task<List<HouseSimpleInfo>> GetMembershipHouseInfosAsync(
+        public async Task<List<HouseSimpleInfo>> GetMembershipHouseSimpleInfosOfUserAsync(
             decimal userId,
             CancellationToken cancellationToken = default)
         {
@@ -157,7 +168,19 @@ namespace HMA.BLL.Tier1.Services
             return houseSimpleInfos;
         }
 
-        public async Task DeleteHouseByIdAsync(
+        public async Task<HouseInfo> CreateHouseAsync(
+            HouseCreationRequest houseCreationRequest,
+            CancellationToken cancellationToken = default)
+        {
+            var houseInfo = _mapper.Map<HouseInfo>(houseCreationRequest);
+            houseInfo.CreationDate = DateTime.UtcNow;
+
+            houseInfo = await _houseRepository.InsertAsync(houseInfo, cancellationToken);
+
+            return houseInfo;
+        }
+
+        public async Task DeleteHouseByIdOwnedByUserAsync(
             BsonObjectId houseId,
             decimal userId,
             CancellationToken cancellationToken = default)

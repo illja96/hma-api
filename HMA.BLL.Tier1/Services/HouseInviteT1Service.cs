@@ -42,7 +42,7 @@ namespace HMA.BLL.Tier1.Services
             _userRepository = userRepository;
         }
 
-        public async Task<List<HouseInviteInfo>> GetInvitesByUserIdAsync(
+        public async Task<List<HouseInviteInfo>> GetInvitesAvailableForUserAsync(
             decimal userId,
             CancellationToken cancellationToken = default)
         {
@@ -59,16 +59,23 @@ namespace HMA.BLL.Tier1.Services
         {
             var houseInvitesFilter = Builders<HouseInviteInfo>.Filter
                 .Eq(hii => hii.InvitedByUserId, houseInviteCreationRequest.InvitedByUserId);
+
             var houseInvitesCount = await _houseInviteRepository.CountAsync(
                 houseInvitesFilter,
                 cancellationToken);
+
             if (houseInvitesCount >= _houseInviteOptions.Value.MaxInvitesPerUser)
             {
                 throw new TooManyHouseInvitesException();
             }
 
-            var houseFilter = Builders<HouseInfo>.Filter
+            var houseIdFilter = Builders<HouseInfo>.Filter
                 .Eq(hi => hi.Id, houseInviteCreationRequest.HouseId);
+            var houseOwnerFilter = Builders<HouseInfo>.Filter
+                .Eq(hi => hi.OwnerId, houseInviteCreationRequest.InvitedByUserId);
+            var houseFilter = Builders<HouseInfo>.Filter
+                .And(houseIdFilter, houseOwnerFilter);
+
             var houseCount = await _houseRepository.CountAsync(houseFilter, cancellationToken);
             if (houseCount != 1)
             {
@@ -77,7 +84,9 @@ namespace HMA.BLL.Tier1.Services
 
             var invitedByUserFilter = Builders<UserInfo>.Filter
                 .Eq(ui => ui.GoogleId, houseInviteCreationRequest.InvitedByUserId);
+
             var invitedByUserFilterCount = await _userRepository.CountAsync(invitedByUserFilter, cancellationToken);
+
             if (invitedByUserFilterCount != 1)
             {
                 throw new UserNotFoundException();
@@ -87,14 +96,14 @@ namespace HMA.BLL.Tier1.Services
             houseInvite.CreatedAt = DateTime.UtcNow;
 
             var userFilter = Builders<UserInfo>.Filter
-                .Eq(ui => ui.Email, houseInviteCreationRequest.UserEmail);
+                .Regex(ui => ui.Email, new BsonRegularExpression($"^{houseInviteCreationRequest.UserEmail}$", "i"));
 
             try
             {
-                var user = await _userRepository.FindOneAsync(userFilter, cancellationToken);
+                var userInfo = await _userRepository.FindOneAsync(userFilter, cancellationToken);
 
-                houseInvite.UserId = user.GoogleId;
-                houseInvite.UserEmail = user.Email;
+                houseInvite.UserId = userInfo.GoogleId;
+                houseInvite.UserEmail = userInfo.Email;
             }
             catch (InvalidOperationException e)
             {
@@ -111,7 +120,7 @@ namespace HMA.BLL.Tier1.Services
             return houseInvite;
         }
 
-        public async Task AcceptInviteAsync(
+        public async Task AcceptInviteAvailableForUserAsync(
             decimal userId,
             BsonObjectId inviteId,
             CancellationToken cancellationToken = default)
@@ -140,7 +149,7 @@ namespace HMA.BLL.Tier1.Services
                 .Eq(hi => hi.Id, houseInvite.HouseId);
 
             var houseUpdate = Builders<HouseInfo>.Update
-                .Push(hi => hi.MemberIds, houseInvite.UserId);
+                .Push(hi => hi.MemberIds, houseInvite.UserId.Value);
 
             await _houseRepository.UpdateOneAsync(
                 houseFilter,
@@ -148,7 +157,7 @@ namespace HMA.BLL.Tier1.Services
                 cancellationToken);
         }
 
-        public async Task DeclineInviteAsync(
+        public async Task DeclineInviteAvailableForUserAsync(
             decimal userId,
             BsonObjectId inviteId,
             CancellationToken cancellationToken = default)

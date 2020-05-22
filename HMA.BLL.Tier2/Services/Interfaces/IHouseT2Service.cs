@@ -9,22 +9,22 @@ namespace HMA.BLL.Tier2.Services.Interfaces
     public interface IHouseT2Service
     {
         /// <summary>
-        /// Get available houses for provided user
+        /// Get available house infos for provided user
         /// </summary>
         /// <param name="userId">User id</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        Task<AvailableHousesInfo> GetAvailableHousesForUserAsync(
+        Task<AvailableHousesInfo> GetAvailableHouseInfosForUserAsync(
             decimal userId,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Get available house by id for provided user
+        /// Get house simple info by id available for provided user
         /// </summary>
         /// <param name="houseId">House id</param>
         /// <param name="userId">User id</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <exception cref="HouseNotFoundException"></exception>
-        Task<HouseSimpleInfo> GetHouseByIdAsync(
+        Task<HouseSimpleInfo> GetHouseSimpleInfoByIdAvailableForUserAsync(
             BsonObjectId houseId,
             decimal userId,
             CancellationToken cancellationToken = default);
@@ -39,13 +39,13 @@ namespace HMA.BLL.Tier2.Services.Interfaces
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Delete available house for provided user
+        /// Delete house owned by provided user
         /// </summary>
         /// <param name="houseId">House id</param>
         /// <param name="userId">User id</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <exception cref="HouseNotFoundException"></exception>
-        Task DeleteHouseByIdAsync(
+        Task DeleteHouseByIdOwnedByUserAsync(
             BsonObjectId houseId,
             decimal userId,
             CancellationToken cancellationToken = default);

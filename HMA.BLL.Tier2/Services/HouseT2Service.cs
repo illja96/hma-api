@@ -29,15 +29,15 @@ namespace HMA.BLL.Tier2.Services
             _userService = userService;
         }
 
-        public async Task<AvailableHousesInfo> GetAvailableHousesForUserAsync(
+        public async Task<AvailableHousesInfo> GetAvailableHouseInfosForUserAsync(
             decimal userId,
             CancellationToken cancellationToken = default)
         {
-            var ownedHouseInfos = await _houseService.GetOwnedHouseInfosAsync(
+            var ownedHouseInfos = await _houseService.GetOwnedHouseSimpleInfosOfUserAsync(
                 userId,
                 cancellationToken);
 
-            var membershipHouseInfos = await _houseService.GetMembershipHouseInfosAsync(
+            var membershipHouseInfos = await _houseService.GetMembershipHouseSimpleInfosOfUserAsync(
                 userId,
                 cancellationToken);
 
@@ -74,12 +74,12 @@ namespace HMA.BLL.Tier2.Services
             return availableHousesInfo;
         }
 
-        public async Task<HouseSimpleInfo> GetHouseByIdAsync(
+        public async Task<HouseSimpleInfo> GetHouseSimpleInfoByIdAvailableForUserAsync(
             BsonObjectId houseId,
             decimal userId,
             CancellationToken cancellationToken = default)
         {
-            var houseSimpleInfo = await _houseService.GetSimpleHouseByIdAsync(houseId, userId, cancellationToken);
+            var houseSimpleInfo = await _houseService.GetSimpleHouseInfoByIdAvailableForUserAsync(houseId, userId, cancellationToken);
 
             try
             {
@@ -106,12 +106,12 @@ namespace HMA.BLL.Tier2.Services
             return houseSimpleInfo;
         }
 
-        public async Task DeleteHouseByIdAsync(
+        public async Task DeleteHouseByIdOwnedByUserAsync(
             BsonObjectId houseId,
             decimal userId,
             CancellationToken cancellationToken = default)
         {
-            await _houseService.DeleteHouseByIdAsync(houseId, userId, cancellationToken);
+            await _houseService.DeleteHouseByIdOwnedByUserAsync(houseId, userId, cancellationToken);
         }
     }
 }

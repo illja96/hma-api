@@ -37,7 +37,7 @@ namespace HMA.BLL.Tier3.Services
         {
             var userFromIdentity = GetUserFromIdentity();
 
-            var invites = await _houseInviteService.GetInvitesByUserIdAsync(userFromIdentity.GoogleId, cancellationToken);
+            var invites = await _houseInviteService.GetInvitesAvailableForUserAsync(userFromIdentity.GoogleId, cancellationToken);
             var inviteViewModels = _mapper.Map<List<HouseInviteSimpleInfoViewModel>>(invites);
 
             var result = new OkObjectResult(inviteViewModels);
@@ -83,7 +83,7 @@ namespace HMA.BLL.Tier3.Services
 
             var userFromIdentity = GetUserFromIdentity();
 
-            await _houseInviteService.AcceptInviteAsync(
+            await _houseInviteService.AcceptInviteAvailableForUserAsync(
                 userFromIdentity.GoogleId,
                 bsonInviteId,
                 cancellationToken);
@@ -112,7 +112,7 @@ namespace HMA.BLL.Tier3.Services
 
             var userFromIdentity = GetUserFromIdentity();
 
-            await _houseInviteService.DeclineInviteAsync(
+            await _houseInviteService.DeclineInviteAvailableForUserAsync(
                 userFromIdentity.GoogleId,
                 bsonInviteId,
                 cancellationToken);

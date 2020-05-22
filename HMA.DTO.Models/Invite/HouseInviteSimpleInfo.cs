@@ -10,7 +10,7 @@ namespace HMA.DTO.Models.Invite
     {
         public BsonObjectId HouseId { get; set; }
 
-        public HouseSimpleInfo House { get; set; }
+        public HouseSimpleInfo HouseInfo { get; set; }
 
         public decimal InvitedByUserId { get; set; }
 

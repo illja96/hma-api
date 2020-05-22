@@ -36,7 +36,7 @@ namespace HMA.BLL.Tier3.Services
         {
             var userFromIdentity = GetUserFromIdentity();
 
-            var availableHousesInfo = await _houseService.GetAvailableHousesForUserAsync(userFromIdentity.GoogleId, cancellationToken);
+            var availableHousesInfo = await _houseService.GetAvailableHouseInfosForUserAsync(userFromIdentity.GoogleId, cancellationToken);
             var availableHousesInfoViewModel = _mapper.Map<AvailableHousesInfoViewModel>(availableHousesInfo);
 
             var result = new OkObjectResult(availableHousesInfoViewModel);
@@ -65,7 +65,7 @@ namespace HMA.BLL.Tier3.Services
 
             try
             {
-                var houseSimpleInfo = await _houseService.GetHouseByIdAsync(
+                var houseSimpleInfo = await _houseService.GetHouseSimpleInfoByIdAvailableForUserAsync(
                     bsonHouseId,
                     userFromIdentity.GoogleId,
                     cancellationToken);
@@ -120,7 +120,7 @@ namespace HMA.BLL.Tier3.Services
 
             try
             {
-                await _houseService.DeleteHouseByIdAsync(
+                await _houseService.DeleteHouseByIdOwnedByUserAsync(
                     bsonHouseId,
                     userFromIdentity.GoogleId,
                     cancellationToken);

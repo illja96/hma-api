@@ -43,7 +43,7 @@ namespace HMA.BLL.Tier3.Tests.Services
         }
 
         [TestMethod]
-        public async Task GetHousesAsync_ReturnsOkObjectResult()
+        public async Task GetAvailableHouseInfosForUserAsync_ReturnsOkObjectResult()
         {
             // Arrange
             _httpContextAccessorMock
@@ -53,7 +53,7 @@ namespace HMA.BLL.Tier3.Tests.Services
             var availableHousesInfo = new AvailableHousesInfo();
 
             _houseT2ServiceMock
-                .Setup(ht2s => ht2s.GetAvailableHousesForUserAsync(
+                .Setup(ht2s => ht2s.GetAvailableHouseInfosForUserAsync(
                     It.IsAny<decimal>(),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync(availableHousesInfo);
@@ -67,7 +67,7 @@ namespace HMA.BLL.Tier3.Tests.Services
         }
 
         [TestMethod]
-        public async Task GetHouseByIdAsync_ReturnsOkObjectResult()
+        public async Task GetHouseSimpleInfoByIdAvailableForUserAsync_ReturnsOkObjectResult()
         {
             // Arrange
             _httpContextAccessorMock
@@ -82,7 +82,7 @@ namespace HMA.BLL.Tier3.Tests.Services
             };
 
             _houseT2ServiceMock
-                .Setup(ht2s => ht2s.GetHouseByIdAsync(
+                .Setup(ht2s => ht2s.GetHouseSimpleInfoByIdAvailableForUserAsync(
                     It.IsAny<BsonObjectId>(),
                     It.IsAny<decimal>(),
                     It.IsAny<CancellationToken>()))

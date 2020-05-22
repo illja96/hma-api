@@ -9,6 +9,7 @@ namespace HMA.AutoMapper.Profiles
         public HouseInviteProfile()
         {
             CreateMap<HouseInviteCreationRequestViewModel, HouseInviteCreationRequest>();
+            CreateMap<HouseInviteCreationRequest, HouseInviteInfo>();
 
             CreateMap<HouseInviteInfo, HouseInviteSimpleInfo>();
             CreateMap<HouseInviteSimpleInfo, HouseInviteSimpleInfoViewModel>();

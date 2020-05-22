@@ -12,7 +12,7 @@ namespace HMA.DTO.Models.Invite
 
         public string UserEmail { get; set; }
 
-        public decimal UserId { get; set; }
+        public decimal? UserId { get; set; }
 
         public DateTime CreatedAt { get; set; }
     }
