@@ -1,15 +1,15 @@
-﻿using HMA.DTO.Models.Invite;
-using MongoDB.Bson;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HMA.BLL.Tier1.Exceptions.House;
 using HMA.BLL.Tier1.Exceptions.Invite;
 using HMA.BLL.Tier1.Exceptions.User;
+using HMA.DTO.Models.Invite;
+using MongoDB.Bson;
 
-namespace HMA.BLL.Tier2.Services.Interfaces
+namespace HMA.BLL.Tier1.Services.Interfaces
 {
-    public interface IHouseInviteT2Service
+    public interface IHouseInviteT1Service
     {
         /// <summary>
         /// Get all invites for provided user

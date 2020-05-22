@@ -1,43 +1,64 @@
 ﻿using HMA.BLL.Tier2.Services.Interfaces;
 using HMA.DTO.Models.Invite;
 using MongoDB.Bson;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using HMA.BLL.Tier1.Services.Interfaces;
 
 namespace HMA.BLL.Tier2.Services
 {
     public class HouseInviteT2Service : IHouseInviteT2Service
     {
-        public Task<List<HouseInviteInfo>> GetInvitesAsync(
+        private readonly IHouseInviteT1Service _houseInviteService;
+
+        public HouseInviteT2Service(IHouseInviteT1Service houseInviteService)
+        {
+            _houseInviteService = houseInviteService;
+        }
+
+        public async Task<List<HouseInviteInfo>> GetInvitesByUserIdAsync(
             decimal userId,
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var houseInvites = await _houseInviteService.GetInvitesByUserIdAsync(
+                userId,
+                cancellationToken);
+
+            return houseInvites;
         }
 
-        public Task<HouseInviteInfo> CreateInviteAsync(
+        public async Task<HouseInviteInfo> CreateInviteAsync(
             HouseInviteCreationRequest houseInviteCreationRequest,
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var houseInvite = await _houseInviteService.CreateInviteAsync(
+                houseInviteCreationRequest,
+                cancellationToken);
+
+            return houseInvite;
         }
 
-        public Task AcceptInviteAsync(
+        public async Task AcceptInviteAsync(
             decimal userId,
             BsonObjectId inviteId,
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
-        }        
+            await _houseInviteService.AcceptInviteAsync(
+                userId,
+                inviteId,
+                cancellationToken);
+        }
 
-        public Task DeclineInviteAsync(
+        public async Task DeclineInviteAsync(
             decimal userId,
             BsonObjectId inviteId,
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
-        }        
+            await _houseInviteService.DeclineInviteAsync(
+                userId,
+                inviteId,
+                cancellationToken);
+        }
     }
 }
