@@ -12,7 +12,7 @@ namespace HMA.DI.AppStart
 
             BllTier3DiStartup.Init(services);
             BllTier2DiStartup.Init(services);
-            BllTier1DiStartup.Init(services);
+            BllTier1DiStartup.Init(services, configuration);
             
             DalDiStartup.Init(services, configuration);
         }
