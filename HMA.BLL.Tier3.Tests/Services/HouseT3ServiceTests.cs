@@ -138,7 +138,7 @@ namespace HMA.BLL.Tier3.Tests.Services
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(OkObjectResult));
-            Assert.IsNull(result.Value, null);
+            Assert.AreEqual(string.Empty, result.Value);
         }
     }
 }
