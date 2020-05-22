@@ -39,6 +39,7 @@ namespace HMA.API.Controllers
         /// <param name="cancellationToken">Cancellation token</param>
         [HttpPost("houses/invites")]
         [ProducesResponseType(typeof(HouseInviteSimpleInfoViewModel), 200)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> CreateInviteAsync(
             [FromBody] HouseInviteCreationRequestViewModel houseInviteCreationRequestViewModel,
@@ -59,6 +60,7 @@ namespace HMA.API.Controllers
         /// <returns></returns>
         [HttpPost("houses/invites/{inviteId}")]
         [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> AcceptInviteAsync(
             [FromRoute] string inviteId,
@@ -78,6 +80,7 @@ namespace HMA.API.Controllers
         /// <param name="cancellationToken">Cancellation token</param>
         [HttpDelete("houses/invites/{inviteId}")]
         [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> DeclineInviteAsync(
             [FromRoute] string inviteId,

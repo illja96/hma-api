@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using HMA.BLL.Tier1.Exceptions.House;
+using HMA.BLL.Tier1.Exceptions.Invite;
 
 namespace HMA.BLL.Tier3.Services
 {
@@ -37,7 +39,10 @@ namespace HMA.BLL.Tier3.Services
         {
             var userFromIdentity = GetUserFromIdentity();
 
-            var invites = await _houseInviteService.GetInvitesAvailableForUserAsync(userFromIdentity.GoogleId, cancellationToken);
+            var invites = await _houseInviteService.GetInvitesAvailableForUserAsync(
+                userFromIdentity.GoogleId,
+                cancellationToken);
+
             var inviteViewModels = _mapper.Map<List<HouseInviteSimpleInfoViewModel>>(invites);
 
             var result = new OkObjectResult(inviteViewModels);
@@ -53,9 +58,33 @@ namespace HMA.BLL.Tier3.Services
             var houseInviteCreationRequest = _mapper.Map<HouseInviteCreationRequest>(houseInviteCreationRequestViewModel);
             houseInviteCreationRequest.InvitedByUserId = userFromIdentity.GoogleId;
 
-            var houseInvite = await _houseInviteService.CreateInviteAsync(
-                houseInviteCreationRequest,
-                cancellationToken);
+            HouseInviteSimpleInfo houseInvite;
+            try
+            {
+                houseInvite = await _houseInviteService.CreateInviteAsync(
+                    houseInviteCreationRequest,
+                    cancellationToken);
+            }
+            catch (TooManyHouseInvitesException)
+            {
+                var modelState = new ModelStateDictionary();
+                modelState.AddModelError(
+                    nameof(houseInviteCreationRequestViewModel.HouseId),
+                    "Too many requests from you are still pending acceptance");
+
+                var badResult = new BadRequestObjectResult(modelState);
+                return badResult;
+            }
+            catch (HouseNotFoundException)
+            {
+                var modelState = new ModelStateDictionary();
+                modelState.AddModelError(
+                    nameof(houseInviteCreationRequestViewModel.HouseId),
+                    "House not found");
+
+                var badResult = new BadRequestObjectResult(modelState);
+                return badResult;
+            }
 
             var houseInviteViewModel = _mapper.Map<HouseInviteSimpleInfoViewModel>(houseInvite);
 
@@ -83,12 +112,20 @@ namespace HMA.BLL.Tier3.Services
 
             var userFromIdentity = GetUserFromIdentity();
 
-            await _houseInviteService.AcceptInviteAvailableForUserAsync(
-                userFromIdentity.GoogleId,
-                bsonInviteId,
-                cancellationToken);
+            try
+            {
+                await _houseInviteService.AcceptInviteAvailableForUserAsync(
+                    userFromIdentity.GoogleId,
+                    bsonInviteId,
+                    cancellationToken);
+            }
+            catch (HouseInviteNotFoundException)
+            {
+                var badResult = new NotFoundObjectResult(null);
+                return badResult;
+            }
 
-            var result = new OkObjectResult(null);
+            var result = new OkObjectResult(string.Empty);
             return result;
         }
 
@@ -112,12 +149,20 @@ namespace HMA.BLL.Tier3.Services
 
             var userFromIdentity = GetUserFromIdentity();
 
-            await _houseInviteService.DeclineInviteAvailableForUserAsync(
-                userFromIdentity.GoogleId,
-                bsonInviteId,
-                cancellationToken);
+            try
+            {
+                await _houseInviteService.DeclineInviteAvailableForUserAsync(
+                    userFromIdentity.GoogleId,
+                    bsonInviteId,
+                    cancellationToken);
+            }
+            catch (HouseInviteNotFoundException)
+            {
+                var badResult = new NotFoundObjectResult(null);
+                return badResult;
+            }
 
-            var result = new OkObjectResult(null);
+            var result = new OkObjectResult(string.Empty);
             return result;
         }
 

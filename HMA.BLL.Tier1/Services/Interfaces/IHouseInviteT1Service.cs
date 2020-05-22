@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using HMA.BLL.Tier1.Exceptions.House;
 using HMA.BLL.Tier1.Exceptions.Invite;
-using HMA.BLL.Tier1.Exceptions.User;
 using HMA.DTO.Models.Invite;
 using MongoDB.Bson;
 
@@ -27,7 +26,6 @@ namespace HMA.BLL.Tier1.Services.Interfaces
         /// <param name="cancellationToken">Cancellation token</param>
         /// <exception cref="TooManyHouseInvitesException"></exception>
         /// <exception cref="HouseNotFoundException"></exception>
-        /// <exception cref="UserNotFoundException"></exception>
         Task<HouseInviteInfo> CreateInviteAsync(
             HouseInviteCreationRequest houseInviteCreationRequest,
             CancellationToken cancellationToken = default);

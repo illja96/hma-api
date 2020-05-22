@@ -11,7 +11,7 @@ namespace HMA.BLL.Tier3.Services.Interfaces
     public interface IHouseT3Service
     {
         /// <summary>
-        /// Get houses available to current user
+        /// Get houses available for current user
         /// </summary>
         /// <param name="cancellationToken">Cancellation token</param>
         Task<ObjectResult> GetHousesAsync(CancellationToken cancellationToken = default);

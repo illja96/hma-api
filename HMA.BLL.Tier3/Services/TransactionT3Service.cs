@@ -188,7 +188,7 @@ namespace HMA.BLL.Tier3.Services
                 userFromIdentity.GoogleId,
                 cancellationToken);
 
-            var result = new OkObjectResult(null);
+            var result = new OkObjectResult(string.Empty);
             return result;
         }
 

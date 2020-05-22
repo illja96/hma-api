@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HMA.BLL.Tier1.Exceptions.House;
 using HMA.BLL.Tier1.Exceptions.Invite;
-using HMA.BLL.Tier1.Exceptions.User;
 using HMA.BLL.Tier1.Options;
 using HMA.BLL.Tier1.Services.Interfaces;
 using HMA.DAL.Repositories.Interfaces;
@@ -82,16 +81,6 @@ namespace HMA.BLL.Tier1.Services
                 throw new HouseNotFoundException();
             }
 
-            var invitedByUserFilter = Builders<UserInfo>.Filter
-                .Eq(ui => ui.GoogleId, houseInviteCreationRequest.InvitedByUserId);
-
-            var invitedByUserFilterCount = await _userRepository.CountAsync(invitedByUserFilter, cancellationToken);
-
-            if (invitedByUserFilterCount != 1)
-            {
-                throw new UserNotFoundException();
-            }
-
             var houseInvite = _mapper.Map<HouseInviteInfo>(houseInviteCreationRequest);
             houseInvite.CreatedAt = DateTime.UtcNow;
 
@@ -155,6 +144,8 @@ namespace HMA.BLL.Tier1.Services
                 houseFilter,
                 houseUpdate,
                 cancellationToken);
+
+            await _houseInviteRepository.DeleteAsync(houseInviteFilter, cancellationToken);
         }
 
         public async Task DeclineInviteAvailableForUserAsync(
