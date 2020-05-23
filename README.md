@@ -74,9 +74,9 @@ Optional:
       },
       "CorsOptions": {
         "AllowedOrigins": [
-          "localhost:44361",
-          "localhost:63216",
-          "localhost:4200"
+          "http://localhost:44361",
+          "http://localhost:63216",
+          "http://localhost:4200"
         ]
       },
       "GoogleOptions": {
