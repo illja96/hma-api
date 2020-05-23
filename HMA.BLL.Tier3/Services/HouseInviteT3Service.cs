@@ -85,6 +85,16 @@ namespace HMA.BLL.Tier3.Services
                 var badResult = new BadRequestObjectResult(modelState);
                 return badResult;
             }
+            catch (SelfReferencingHouseInviteException)
+            {
+                var modelState = new ModelStateDictionary();
+                modelState.AddModelError(
+                    nameof(houseInviteCreationRequestViewModel.UserEmail),
+                    "House owner can't invite himself");
+
+                var badResult = new BadRequestObjectResult(modelState);
+                return badResult;
+            }
 
             var houseInviteViewModel = _mapper.Map<HouseInviteSimpleInfoViewModel>(houseInvite);
 

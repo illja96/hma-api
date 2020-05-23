@@ -26,6 +26,7 @@ namespace HMA.BLL.Tier2.Services.Interfaces
         /// <param name="cancellationToken">Cancellation token</param>
         /// <exception cref="TooManyHouseInvitesException"></exception>
         /// <exception cref="HouseNotFoundException"></exception>
+        /// <exception cref="SelfReferencingHouseInviteException"></exception>
         Task<HouseInviteSimpleInfo> CreateInviteAsync(
             HouseInviteCreationRequest houseInviteCreationRequest,
             CancellationToken cancellationToken = default);

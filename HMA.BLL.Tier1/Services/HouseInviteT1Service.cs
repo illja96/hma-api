@@ -91,6 +91,12 @@ namespace HMA.BLL.Tier1.Services
             {
                 var userInfo = await _userRepository.FindOneAsync(userFilter, cancellationToken);
 
+                var isUserInvitingHimself = userInfo.GoogleId == houseInvite.InvitedByUserId;
+                if (isUserInvitingHimself)
+                {
+                    throw new SelfReferencingHouseInviteException();
+                }
+
                 houseInvite.UserId = userInfo.GoogleId;
                 houseInvite.UserEmail = userInfo.Email;
             }
