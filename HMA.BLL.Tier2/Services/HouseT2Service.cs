@@ -106,12 +106,12 @@ namespace HMA.BLL.Tier2.Services
             return houseSimpleInfo;
         }
 
-        public async Task DeleteHouseByIdOwnedByUserAsync(
+        public async Task DeleteOrLeaveHouseByIdAvailableForUserAsync(
             BsonObjectId houseId,
             decimal userId,
             CancellationToken cancellationToken = default)
         {
-            await _houseService.DeleteHouseByIdOwnedByUserAsync(houseId, userId, cancellationToken);
+            await _houseService.DeleteOrLeaveHouseByIdAvailableForUserAsync(houseId, userId, cancellationToken);
         }
     }
 }

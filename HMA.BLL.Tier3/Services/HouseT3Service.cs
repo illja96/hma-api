@@ -120,7 +120,7 @@ namespace HMA.BLL.Tier3.Services
 
             try
             {
-                await _houseService.DeleteHouseByIdOwnedByUserAsync(
+                await _houseService.DeleteOrLeaveHouseByIdAvailableForUserAsync(
                     bsonHouseId,
                     userFromIdentity.GoogleId,
                     cancellationToken);
@@ -133,8 +133,6 @@ namespace HMA.BLL.Tier3.Services
                 var badResult = new NotFoundObjectResult(null);
                 return badResult;
             }
-
-            // TODO: Implement house leave for member
         }
 
         private UserInfo GetUserFromIdentity()

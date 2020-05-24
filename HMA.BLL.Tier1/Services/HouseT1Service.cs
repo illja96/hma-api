@@ -180,18 +180,29 @@ namespace HMA.BLL.Tier1.Services
             return houseInfo;
         }
 
-        public async Task DeleteHouseByIdOwnedByUserAsync(
+        public async Task DeleteOrLeaveHouseByIdAvailableForUserAsync(
             BsonObjectId houseId,
             decimal userId,
             CancellationToken cancellationToken = default)
         {
             var houseFilter = Builders<HouseInfo>.Filter.Eq(hi => hi.Id, houseId);
-            var userFilter = Builders<HouseInfo>.Filter.Eq(hi => hi.OwnerId, userId);
+            var ownerFilter = Builders<HouseInfo>.Filter.Eq(hi => hi.OwnerId, userId);
+            var memberFilter = Builders<HouseInfo>.Filter.All(hi => hi.MemberIds, new[] { userId });
 
-            var filter = Builders<HouseInfo>.Filter.And(houseFilter, userFilter);
+            var filter = Builders<HouseInfo>.Filter.And(houseFilter, ownerFilter);
 
             var deletedCount = await _houseRepository.DeleteAsync(filter, cancellationToken);
-            if (deletedCount != 1)
+            if (deletedCount == 1)
+            {
+                return;
+            }
+
+            filter = Builders<HouseInfo>.Filter.And(houseFilter, memberFilter);
+
+            var update = Builders<HouseInfo>.Update.Pull(hi => hi.MemberIds, userId);
+
+            var updatedHouseInfo = await _houseRepository.UpdateOneAsync(filter, update, cancellationToken);
+            if (updatedHouseInfo == null)
             {
                 throw new HouseNotFoundException();
             }

@@ -300,8 +300,9 @@ namespace HMA.BLL.Tier1.Tests.Services
             Assert.AreSame(houseSimpleInfos, result);
         }
 
+        // TODO: Add tests to tests leave functionality
         [TestMethod]
-        public async Task DeleteHouseByIdAsync_DeletesHouse()
+        public async Task DeleteOrLeaveHouseByIdAvailableForUserAsync_DeletesHouse()
         {
             // Arrange
             var houseInfo = new HouseInfo()
@@ -318,11 +319,11 @@ namespace HMA.BLL.Tier1.Tests.Services
 
             // Act
             // Assert
-            await _houseService.DeleteHouseByIdOwnedByUserAsync(houseInfo.Id, houseInfo.OwnerId);
+            await _houseService.DeleteOrLeaveHouseByIdAvailableForUserAsync(houseInfo.Id, houseInfo.OwnerId);
         }
 
         [TestMethod]
-        public async Task DeleteHouseByIdAsync_HouseNotFound_ThrowsHouseNotFoundException()
+        public async Task DeleteOrLeaveHouseByIdAvailableForUserAsync_HouseNotFound_ThrowsHouseNotFoundException()
         {
             // Arrange
             var houseInfo = new HouseInfo()
@@ -340,7 +341,7 @@ namespace HMA.BLL.Tier1.Tests.Services
             // Act
             // Assert
             await Assert.ThrowsExceptionAsync<HouseNotFoundException>(() =>
-                _houseService.DeleteHouseByIdOwnedByUserAsync(houseInfo.Id, houseInfo.OwnerId));
+                _houseService.DeleteOrLeaveHouseByIdAvailableForUserAsync(houseInfo.Id, houseInfo.OwnerId));
         }
     }
 }
