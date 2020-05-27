@@ -56,16 +56,33 @@ namespace HMA.BLL.Tier1.Services
             HouseInviteCreationRequest houseInviteCreationRequest,
             CancellationToken cancellationToken = default)
         {
-            var houseInvitesFilter = Builders<HouseInviteInfo>.Filter
+            var houseInvitesInvitedByUserIdFilter = Builders<HouseInviteInfo>.Filter
                 .Eq(hii => hii.InvitedByUserId, houseInviteCreationRequest.InvitedByUserId);
 
-            var houseInvitesCount = await _houseInviteRepository.CountAsync(
-                houseInvitesFilter,
+            var houseInvitesInvitedByUserIdCount = await _houseInviteRepository.CountAsync(
+                houseInvitesInvitedByUserIdFilter,
                 cancellationToken);
 
-            if (houseInvitesCount >= _houseInviteOptions.Value.MaxInvitesPerUser)
+            if (houseInvitesInvitedByUserIdCount >= _houseInviteOptions.Value.MaxInvitesPerUser)
             {
                 throw new TooManyHouseInvitesException();
+            }
+
+            var houseInvitesHouseIdFilter = Builders<HouseInviteInfo>.Filter
+                .Eq(hii => hii.HouseId, houseInviteCreationRequest.HouseId);
+            var houseInvitesUserEmailFilter = Builders<HouseInviteInfo>.Filter
+                .Regex(hii => hii.UserEmail, new BsonRegularExpression($"^{houseInviteCreationRequest.UserEmail}$", "i"));
+
+            var sameHouseInvitesFilter = Builders<HouseInviteInfo>.Filter
+                .And(houseInvitesHouseIdFilter, houseInvitesUserEmailFilter);
+
+            var sameHouseInvitesCount = await _houseInviteRepository.CountAsync(
+                sameHouseInvitesFilter,
+                cancellationToken);
+
+            if (sameHouseInvitesCount != 0)
+            {
+                throw new HouseInviteDuplicateInsertionException();
             }
 
             var houseIdFilter = Builders<HouseInfo>.Filter
@@ -102,12 +119,10 @@ namespace HMA.BLL.Tier1.Services
             }
             catch (InvalidOperationException e)
             {
-                if (e.Message.Equals("Sequence contains no elements", StringComparison.Ordinal))
+                if (!e.Message.Equals("Sequence contains no elements", StringComparison.Ordinal))
                 {
-                    throw new HouseNotFoundException();
+                    throw;
                 }
-
-                throw;
             }
 
             houseInvite = await _houseInviteRepository.InsertAsync(houseInvite, cancellationToken);

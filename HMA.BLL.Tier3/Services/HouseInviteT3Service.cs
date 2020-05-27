@@ -75,6 +75,16 @@ namespace HMA.BLL.Tier3.Services
                 var badResult = new BadRequestObjectResult(modelState);
                 return badResult;
             }
+            catch (HouseInviteDuplicateInsertionException)
+            {
+                var modelState = new ModelStateDictionary();
+                modelState.AddModelError(
+                    nameof(houseInviteCreationRequestViewModel.UserEmail),
+                    "User already invited");
+
+                var badResult = new BadRequestObjectResult(modelState);
+                return badResult;
+            }
             catch (HouseNotFoundException)
             {
                 var modelState = new ModelStateDictionary();
