@@ -84,5 +84,19 @@ namespace HMA.BLL.Tier1.Services.Interfaces
             BsonObjectId houseId,
             decimal userId,
             CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Remove house member by id if provided user is an house owner
+        /// </summary>
+        /// <param name="houseId">House id</param>
+        /// <param name="userId">User id</param>
+        /// <param name="memberId">Member id</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <exception cref="HouseNotFoundException"></exception>
+        Task RemoveHouseMemberByIdAvailableForUserAsync(
+            BsonObjectId houseId,
+            decimal userId,
+            decimal memberId,
+            CancellationToken cancellationToken = default);
     }
 }

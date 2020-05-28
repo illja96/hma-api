@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -123,6 +124,45 @@ namespace HMA.BLL.Tier3.Services
                 await _houseService.DeleteOrLeaveHouseByIdAvailableForUserAsync(
                     bsonHouseId,
                     userFromIdentity.GoogleId,
+                    cancellationToken);
+
+                var result = new OkObjectResult(string.Empty);
+                return result;
+            }
+            catch (HouseNotFoundException)
+            {
+                var badResult = new NotFoundObjectResult(null);
+                return badResult;
+            }
+        }
+
+        public async Task<ObjectResult> RemoveHouseMemberByIdAsync(
+            string houseId,
+            decimal memberId,
+            CancellationToken cancellationToken = default)
+        {
+            BsonObjectId bsonHouseId;
+            try
+            {
+                bsonHouseId = _mapper.Map<BsonObjectId>(houseId);
+            }
+            catch (AutoMapperMappingException)
+            {
+                var modelState = new ModelStateDictionary();
+                modelState.AddModelError(nameof(houseId), "Invalid format");
+
+                var badResult = new BadRequestObjectResult(modelState);
+                return badResult;
+            }
+
+            var userFromIdentity = GetUserFromIdentity();
+
+            try
+            {
+                await _houseService.RemoveHouseMemberByIdAvailableForUserAsync(
+                    bsonHouseId,
+                    userFromIdentity.GoogleId,
+                    memberId,
                     cancellationToken);
 
                 var result = new OkObjectResult(string.Empty);

@@ -207,5 +207,25 @@ namespace HMA.BLL.Tier1.Services
                 throw new HouseNotFoundException();
             }
         }
+
+        public async Task RemoveHouseMemberByIdAvailableForUserAsync(
+            BsonObjectId houseId,
+            decimal userId,
+            decimal memberId,
+            CancellationToken cancellationToken = default)
+        {
+            var houseFilter = Builders<HouseInfo>.Filter.Eq(hi => hi.Id, houseId);
+            var ownerFilter = Builders<HouseInfo>.Filter.Eq(hi => hi.OwnerId, userId);
+
+            var filter = Builders<HouseInfo>.Filter.And(houseFilter, ownerFilter);
+
+            var update = Builders<HouseInfo>.Update.Pull(hi => hi.MemberIds, memberId);
+
+            var updatedHouseInfo = await _houseRepository.UpdateOneAsync(filter, update, cancellationToken);
+            if (updatedHouseInfo == null)
+            {
+                throw new HouseNotFoundException();
+            }
+        }
     }
 }

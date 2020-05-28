@@ -44,5 +44,18 @@ namespace HMA.BLL.Tier3.Services.Interfaces
         Task<ObjectResult> DeleteOrLeaveHouseByIdAsync(
             string houseId,
             CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Remove member by id
+        /// Remove house member only if current user is house owner.
+        /// </summary>
+        /// <param name="houseId">House id</param>
+        /// <param name="memberId">Member id</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns></returns>
+        Task<ObjectResult> RemoveHouseMemberByIdAsync(
+            string houseId,
+            decimal memberId,
+            CancellationToken cancellationToken = default);
     }
 }

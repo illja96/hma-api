@@ -113,5 +113,18 @@ namespace HMA.BLL.Tier2.Services
         {
             await _houseService.DeleteOrLeaveHouseByIdAvailableForUserAsync(houseId, userId, cancellationToken);
         }
+
+        public async Task RemoveHouseMemberByIdAvailableForUserAsync(
+            BsonObjectId houseId,
+            decimal userId,
+            decimal memberId,
+            CancellationToken cancellationToken = default)
+        {
+            await _houseService.RemoveHouseMemberByIdAvailableForUserAsync(
+                houseId,
+                userId,
+                memberId,
+                cancellationToken);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using HMA.BLL.Tier3.Services.Interfaces;
 using HMA.DTO.ViewModels.House;
@@ -82,6 +83,24 @@ namespace HMA.API.Controllers
             CancellationToken cancellationToken = default)
         {
             var result = await _houseService.DeleteOrLeaveHouseByIdAsync(houseId, cancellationToken);
+            return result;
+        }
+
+        /// <summary>
+        /// Remove house member by id
+        /// </summary>
+        /// <param name="houseId">House id</param>
+        /// <param name="memberId">Member id</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        [HttpDelete("houses/{houseId}/members/{memberId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> RemoveHouseMemberByIdAsync(
+            [FromRoute] string houseId,
+            [FromRoute] decimal memberId,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await _houseService.RemoveHouseMemberByIdAsync(houseId, memberId, cancellationToken);
             return result;
         }
     }
